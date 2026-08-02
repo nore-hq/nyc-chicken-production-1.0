@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface NavbarProps {
   cartCount: number;
   onOpenCart: () => void;
+  onOpenMenu?: () => void;
 }
 
 const navLinks = [
@@ -18,7 +19,7 @@ const navLinks = [
   { href: "#location", label: "Location" },
 ];
 
-export default function Navbar({ cartCount, onOpenCart }: NavbarProps) {
+export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -83,7 +84,18 @@ export default function Navbar({ cartCount, onOpenCart }: NavbarProps) {
           </nav>
 
           {/* Right Side Actions */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3 sm:gap-5">
+            {/* Order Full Menu Button */}
+            <motion.button
+              onClick={onOpenMenu}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              className="hidden lg:flex items-center gap-2 px-5 py-2 rounded-full bg-[#fdb813] text-black text-xs font-bold tracking-[0.2em] uppercase shadow-[0_0_15px_rgba(253,184,19,0.3)] hover:shadow-[0_0_25px_rgba(253,184,19,0.5)] transition-shadow duration-300"
+            >
+              Order Now
+            </motion.button>
+
             {/* Reserve Button */}
             <motion.a
               href="tel:8111809991"
@@ -164,15 +176,25 @@ export default function Navbar({ cartCount, onOpenCart }: NavbarProps) {
                   </Link>
                 </motion.div>
               ))}
+              {/* Mobile Reserve/Order Buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35, duration: 0.3 }}
-                className="pt-6 w-full"
+                className="pt-6 w-full flex flex-col gap-3"
               >
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenMenu?.();
+                  }}
+                  className="block w-full text-center py-3 px-6 rounded-full bg-[#fdb813] text-black font-bold text-sm uppercase tracking-[0.2em] active:scale-95 transition-transform shadow-[0_0_15px_rgba(253,184,19,0.3)]"
+                >
+                  Order Full Menu
+                </button>
                 <a
                   href="tel:8111809991"
-                  className="block text-center py-3 px-6 rounded-full bg-[#fdb813] text-black font-bold text-sm uppercase tracking-[0.2em] active:scale-95 transition-transform"
+                  className="block w-full text-center py-3 px-6 rounded-full border border-[#fdb813] text-[#fdb813] font-bold text-sm uppercase tracking-[0.2em] active:scale-95 transition-transform"
                 >
                   Call Now: 8111809991
                 </a>

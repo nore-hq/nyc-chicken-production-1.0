@@ -78,7 +78,16 @@ export default function Home() {
 
       <div className="relative z-10 flex flex-col flex-grow">
         {/* Navbar */}
-        <Navbar cartCount={cartCount} onOpenCart={() => setIsCartOpen(true)} />
+        <Navbar 
+          cartCount={cartCount} 
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenMenu={() => {
+            setIsMenuExpanded(true);
+            setTimeout(() => {
+              document.getElementById('menu-full')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }}
+        />
 
       {/* Main Landing Sections */}
       <main className="flex-grow">

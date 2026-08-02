@@ -15,7 +15,7 @@ export default function InstagramReelsWidget() {
     },
     {
       id: "2",
-      videoSrc: "/videos/burger-video.mp4",
+      videoSrc: "/videos/hero-video.mp4",
       url: "https://www.instagram.com/reel/DbYUiMrypjR/",
       title: "Best Burgers in TVM 🍔🔥",
       likes: "3,110",
@@ -23,7 +23,7 @@ export default function InstagramReelsWidget() {
     },
     {
       id: "3",
-      videoSrc: "/videos/chicken-video.mp4",
+      videoSrc: "/videos/hero-video.mp4",
       url: "https://www.instagram.com/reel/DbgA034jquH/",
       title: "Crispy Golden Fried Chicken 🍗",
       likes: "2,050",

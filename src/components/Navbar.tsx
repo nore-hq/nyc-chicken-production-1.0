@@ -51,6 +51,7 @@ export default function Navbar({ cartCount, onOpenCart }: NavbarProps) {
                   src="/nyc_logo_latest.png"
                   alt="New York Chicken Logo"
                   fill
+                  sizes="(max-width: 768px) 64px, 80px"
                   className="object-contain"
                   priority
                 />

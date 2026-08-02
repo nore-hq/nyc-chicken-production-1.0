@@ -12,8 +12,10 @@ interface MenuPreviewProps {
 
 export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) {
   const [isMobile, setIsMobile] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
+    setHasMounted(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -52,7 +54,7 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
         </motion.div>
 
         {/* Video Cards — Desktop only */}
-        {!isMobile && (
+        {hasMounted && !isMobile && (
           <div className="grid grid-cols-3 gap-8 mb-16">
             {featuredItems.map((item, idx) => (
               <motion.div

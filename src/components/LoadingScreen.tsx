@@ -22,8 +22,8 @@ export default function LoadingScreen() {
     const handleLoad = () => {
       setTimeout(() => {
         setProgress(100);
-        setTimeout(() => setIsLoading(false), 500);
-      }, 300);
+        setTimeout(() => setIsLoading(false), 300);
+      }, 100);
     };
 
     if (document.readyState === "complete") {
@@ -34,8 +34,8 @@ export default function LoadingScreen() {
 
     const timeout = setTimeout(() => {
       setProgress(100);
-      setTimeout(() => setIsLoading(false), 500);
-    }, 3500);
+      setTimeout(() => setIsLoading(false), 300);
+    }, 1200);
 
     return () => {
       window.removeEventListener("load", handleLoad);

@@ -53,10 +53,15 @@ export default function Hero() {
         animate="visible"
         className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 text-center flex flex-col items-center"
       >
-        <motion.div variants={itemVariants} className="inline-block px-5 py-2 rounded-full border border-[#fdb813]/30 bg-black/30 backdrop-blur-md mb-6 sm:mb-8">
-          <span className="text-[#fdb813] text-[10px] sm:text-xs font-bold tracking-[0.25em] uppercase font-sans">
+        <motion.div 
+          variants={itemVariants} 
+          className="flex items-center gap-4 mb-6 sm:mb-10 opacity-90"
+        >
+          <div className="h-[2px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-[#fdb813] rounded-full"></div>
+          <span className="text-[#fdb813] text-[10px] sm:text-xs font-bold tracking-[0.35em] uppercase font-sans drop-shadow-[0_0_10px_rgba(253,184,19,0.5)]">
             Premium Dining Experience
           </span>
+          <div className="h-[2px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-[#fdb813] rounded-full"></div>
         </motion.div>
 
         <motion.h1

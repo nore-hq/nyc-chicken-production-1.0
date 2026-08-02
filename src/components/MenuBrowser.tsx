@@ -218,9 +218,9 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                         )}
 
                         <div className="flex items-center gap-2 pt-1 opacity-60">
-                          {item.isVeg && <Leaf className="w-3.5 h-3.5 text-green-500" title="Vegetarian" />}
-                          {item.isSpicy && <Flame className="w-3.5 h-3.5 text-red-500" title="Spicy" />}
-                          {item.isGrilled && <Sparkles className="w-3.5 h-3.5 text-[#fdb813]" title="Char-Grilled" />}
+                          {item.isVeg && <span title="Vegetarian"><Leaf className="w-3.5 h-3.5 text-green-500" /></span>}
+                          {item.isSpicy && <span title="Spicy"><Flame className="w-3.5 h-3.5 text-red-500" /></span>}
+                          {item.isGrilled && <span title="Char-Grilled"><Sparkles className="w-3.5 h-3.5 text-[#fdb813]" /></span>}
                         </div>
                       </div>
 

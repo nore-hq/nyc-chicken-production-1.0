@@ -1,6 +1,6 @@
 "use client";
 
-import { Instagram, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function InstagramReelsWidget() {

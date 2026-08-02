@@ -1,0 +1,111 @@
+"use client";
+
+import { MENU_ITEMS } from "@/data/menuData";
+import { ChevronRight, Play } from "lucide-react";
+import { motion } from "framer-motion";
+
+interface MenuPreviewProps {
+  onExpand: () => void;
+  isExpanded: boolean;
+}
+
+export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) {
+  // Select top 3 best selling items to feature
+  const featuredItems = MENU_ITEMS.filter(item => item.isBestSeller).slice(0, 3);
+  
+  // Assign background videos for the 3 featured cards
+  const cardVideos = [
+    "/videos/burger-video.mp4",
+    "/videos/chicken-video.mp4",
+    "/videos/hero-video.mp4"
+  ];
+
+  return (
+    <section className="py-24 bg-transparent relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <p className="text-[#fdb813] text-xs font-bold tracking-[0.3em] uppercase mb-4 font-sans">Signature Selection</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl text-white capitalize tracking-tight" style={{ fontFamily: 'var(--font-playfair), serif' }}>
+            Taste The Menu
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          {featuredItems.map((item, idx) => (
+            <motion.div 
+              key={item.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: idx * 0.15 }}
+              whileHover={{ y: -10 }}
+              className="group relative bg-[#111111] rounded-3xl overflow-hidden border border-gray-900 hover:border-[#fdb813]/50 transition-all duration-500 shadow-2xl"
+            >
+              <div className="relative h-72 w-full bg-black flex items-center justify-center overflow-hidden">
+                {/* Background Video */}
+                <video
+                  src={cardVideos[idx % cardVideos.length]}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                  disablePictureInPicture
+                />
+                
+                {/* Gradient Overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/40 to-transparent opacity-90" />
+                
+                {/* Floating details */}
+                <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm border border-white/10 px-3 py-1 rounded-full flex items-center gap-2">
+                  <Play className="w-3 h-3 text-[#fdb813] fill-[#fdb813]" />
+                  <span className="text-[10px] text-white uppercase font-bold tracking-widest font-sans">Feature</span>
+                </div>
+              </div>
+              
+              <div className="relative p-6 -mt-12 z-20">
+                <div className="bg-[#111111]/90 backdrop-blur-md p-6 rounded-2xl border border-gray-800 shadow-xl group-hover:border-[#fdb813]/30 transition-colors">
+                  <h3 className="text-xl sm:text-2xl text-white mb-2" style={{ fontFamily: 'var(--font-playfair), serif' }}>
+                    {item.name}
+                  </h3>
+                  <p className="text-gray-400 text-xs sm:text-sm font-light line-clamp-2 leading-relaxed font-sans">
+                    {item.description}
+                  </p>
+                  
+                  <div className="mt-4 pt-4 border-t border-gray-800 flex justify-between items-center">
+                    <span className="text-[#fdb813] font-bold tracking-widest text-sm font-sans">₹{item.price}</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {!isExpanded && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="flex justify-center"
+          >
+            <button
+              onClick={onExpand}
+              className="group flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-transparent border border-[#fdb813]/50 text-white rounded-full font-bold text-sm sm:text-base uppercase tracking-widest hover:border-[#fdb813] hover:bg-[#fdb813] hover:text-black transition-all duration-300 shadow-xl font-sans"
+            >
+              <span>Explore Full Menu</span>
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </motion.div>
+        )}
+
+      </div>
+    </section>
+  );
+}

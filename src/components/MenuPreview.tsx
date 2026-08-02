@@ -25,8 +25,8 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
 
   // Assign background videos for the 3 featured cards
   const cardVideos = [
-    "/videos/hero-video.mp4",
-    "/videos/hero-video.mp4",
+    "/videos/burger-video.mp4",
+    "/videos/chicken-video.mp4",
     "/videos/hero-video.mp4",
   ];
 

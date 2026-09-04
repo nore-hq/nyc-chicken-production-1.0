@@ -32,7 +32,9 @@ export default function InstagramReelsWidget() {
   ];
 
   return (
-    <section className="py-24 bg-black/50 backdrop-blur-sm border-t border-gray-900/50 overflow-hidden">
+    <section className="py-24 bg-black/50 backdrop-blur-sm border-t border-[#fdb813]/10 overflow-hidden relative">
+      {/* Subtle yellow ambient glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#fdb813]/[0.04] rounded-full blur-[150px] pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}

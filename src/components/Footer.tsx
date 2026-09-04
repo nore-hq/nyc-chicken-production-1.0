@@ -7,9 +7,12 @@ import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer className="bg-black/80 backdrop-blur-md text-white pt-16 sm:pt-20 pb-8 sm:pb-10 border-t border-gray-900/50 relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-10 md:gap-12 pb-12 sm:pb-16 border-b border-gray-900">
+    <footer className="bg-[#0b0c0e]/95 backdrop-blur-md text-white pt-16 sm:pt-20 pb-[max(2.5rem,env(safe-area-inset-bottom))] border-t border-[#fdb813]/20 relative z-10 overflow-hidden">
+      {/* Ambient Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-[#fdb813]/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-10 md:gap-12 pb-12 sm:pb-16 border-b border-gray-900/50">
           {/* Brand */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -97,7 +100,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/NYC_MENU_MAY_2026.pdf"
+                  href="/NYC_MENU_MAY_2026_compressed.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 hover:text-[#fdb813] font-bold transition-colors group"
@@ -126,8 +129,7 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Copyright */}
-        <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-xs text-gray-600 font-bold tracking-widest uppercase gap-3 sm:gap-4 font-sans">
+        <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-xs text-gray-500 font-bold tracking-widest uppercase gap-3 sm:gap-4 font-sans">
           <p>© {new Date().getFullYear()} New York Chicken. All Rights Reserved.</p>
           <p className="text-[#fdb813]/60">Elevated Dining Experience</p>
         </div>

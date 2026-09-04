@@ -7,6 +7,7 @@
     --nyc-yellow: #fdb813;
     --nyc-yellow-hover: #e09f00;
     --nyc-red: #e50914;
+    --nyc-black: #0b0c0e;
     --card-bg: rgba(22, 24, 29, 0.75);
     --card-border: rgba(253, 184, 19, 0.15);
   }
@@ -85,7 +86,8 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b0c0e;
+  background: #0d0e10;
+  border-left: 1px solid rgba(253, 184, 19, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {

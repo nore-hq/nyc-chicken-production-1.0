@@ -19,7 +19,9 @@ export default function BrochureViewer() {
   };
 
   return (
-    <section id="brochure" className="py-20 md:py-24 bg-black/40 backdrop-blur-sm relative overflow-hidden">
+    <section id="brochure" className="py-20 md:py-24 bg-black/40 backdrop-blur-sm relative overflow-hidden border-t border-[#fdb813]/10">
+      {/* Subtle yellow ambient glow */}
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#fdb813]/[0.04] rounded-full blur-[150px] pointer-events-none" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

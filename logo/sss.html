@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rolls-Royce | Exceeding Expectations</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #0d0d0d;
+            color: #f5f5f5;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ffd700;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #111, #000);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #ccc;
+            margin-top: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #111;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('https://images.unsplash.com/photo-1596366943809-564c8185a275') no-repeat center center/cover;
+            color: #000;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #ccc;
+            max-width: 800px;
+            margin: 20px auto;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .hero a {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #000;
+            color: #ffd700;
+            border-radius: 8px;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .hero a:hover {
+            background-color: #111;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 60px 20px;
+            background-color: #111;
+        }
+
+        .features h3 {
+            text-align: center;
+            font-size: 32px;
+            color: #ffd700;
+            margin-bottom: 40px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-box {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-box h4 {
+            font-size: 24px;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .feature-box p {
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        /* Car Gallery */
+        .gallery {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .gallery h3 {
+            font-size: 32px;
+            color: #ffd700;
+            margin-bottom: 40px;
+        }
+
+        .gallery-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-images img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 60px 20px;
+            background-color: #0d0d0d;
+        }
+
+        .testimonials h3 {
+            text-align: center;
+            font-size: 32px;
+            color: #ffd700;
+            margin-bottom: 40px;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            background-color: #111;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .testimonial p {
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        .testimonial cite {
+            display: block;
+            margin-top: 20px;
+            font-style: italic;
+            color: #888;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        footer a {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Rolls-Royce</h1>
+        <p>Exceeding Expectations Since 1906</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#features">Features</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Experience Unparalleled Luxury</h2>
+        <p>At Rolls-Royce, we craft automobiles that redefine the boundaries of excellence. Each vehicle is a testament to over a century of engineering perfection and timeless design.</p>
+        <a href="#contact">Schedule a Test Drive</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h3>Why Choose Rolls-Royce?</h3>
+        <div class="feature-grid">
+            <div class="feature-box">
+                <h4>Handcrafted Excellence</h4>
+                <p>Every Rolls-Royce is meticulously crafted by master artisans, ensuring perfection in every detail.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Unmatched Performance</h4>
+                <p>Experience power and precision with our advanced engineering and cutting-edge technology.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Exclusive Design</h4>
+                <p>Our vehicles are designed to captivate, with timeless elegance that sets the standard for luxury.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h3>Discover Our Collection</h3>
+        <div class="gallery-images">
+            <img src="https://images.unsplash.com/photo-1596366943809-564c8185a275" alt="Car 1">
+            <img src="https://images.unsplash.com/photo-1600772162945-1b2058160555" alt="Car 2">
+            <img src="https://images.unsplash.com/photo-1596366943809-564c8185a275" alt="Car 3">
+            <img src="https://images.unsplash.com/photo-1600772162945-1b2058160555" alt="Car 4">
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <h3>What Our Clients Say</h3>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <p>"The attention to detail in my Rolls-Royce is unmatched. It's more than a car - it's a masterpiece."</p>
+                <cite>- John D., London</cite>
+            </div>
+            <div class="testimonial">
+                <p>"The driving experience is second to none. Rolls-Royce has redefined luxury for me."</p>
+                <cite>- Sarah L., New York</cite>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Contact Us</h2>
+        <p>Ready to experience the pinnacle of luxury? Contact our team to schedule your test drive.</p>
+        <p><strong>Phone:</strong> +1-800-555-0199</p>
+        <p><strong>Email:</strong> <a href="mailto:info@rollsroyce.com">info@rollsroyce.com</a></p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 Rolls-Royce. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+</body>
+</html>

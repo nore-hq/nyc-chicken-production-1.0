@@ -34,6 +34,10 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
 
   return (
     <section className="py-20 md:py-24 bg-transparent relative overflow-hidden">
+      {/* Ambient Yellow Glows */}
+      <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-[#fdb813]/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-[#fdb813]/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -64,7 +68,7 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: idx * 0.15 }}
                 whileHover={{ y: -10, scale: 1.02 }}
-                className="group relative bg-[#111111] rounded-3xl overflow-hidden border border-gray-900 hover:border-[#fdb813]/50 transition-all duration-500 shadow-2xl cursor-pointer"
+                className="group relative bg-[#111111] rounded-3xl overflow-hidden border border-[#fdb813]/20 hover:border-[#fdb813] transition-all duration-500 shadow-[0_0_30px_rgba(253,184,19,0.1)] hover:shadow-[0_0_40px_rgba(253,184,19,0.3)] cursor-pointer"
               >
                 <div className="relative h-72 w-full bg-black overflow-hidden">
                   <video
@@ -86,7 +90,7 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                 </div>
 
                 <div className="relative p-6 -mt-12 z-20">
-                  <div className="bg-[#111111]/90 backdrop-blur-md p-6 rounded-2xl border border-gray-800 shadow-xl group-hover:border-[#fdb813]/30 transition-colors duration-300">
+                  <div className="bg-[#111111]/90 backdrop-blur-md p-6 rounded-2xl border border-gray-800 shadow-xl group-hover:border-[#fdb813]/50 transition-colors duration-300">
                     <h3
                       className="text-xl text-white mb-2"
                       style={{ fontFamily: "var(--font-playfair), serif" }}
@@ -118,7 +122,7 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="flex items-center justify-between p-5 bg-black/40 backdrop-blur-sm rounded-2xl border border-gray-900 active:border-[#fdb813]/50 active:scale-[0.98] transition-all"
+                className="flex items-center justify-between p-5 bg-black/40 backdrop-blur-sm rounded-2xl border border-[#fdb813]/20 hover:border-[#fdb813]/50 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(253,184,19,0.05)]"
               >
                 <div className="flex-1 min-w-0 pr-4">
                   <h3
@@ -151,7 +155,7 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="group flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-transparent border border-[#fdb813]/50 text-white rounded-full font-bold text-sm sm:text-base uppercase tracking-widest hover:border-[#fdb813] hover:bg-[#fdb813] hover:text-black transition-all duration-300 shadow-xl font-sans"
+              className="group flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-transparent border border-[#fdb813]/50 text-white rounded-full font-bold text-sm sm:text-base uppercase tracking-widest hover:border-[#fdb813] hover:bg-[#fdb813] hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(253,184,19,0.15)] hover:shadow-[0_0_30px_rgba(253,184,19,0.3)] font-sans"
             >
               <span>Explore Full Menu</span>
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />

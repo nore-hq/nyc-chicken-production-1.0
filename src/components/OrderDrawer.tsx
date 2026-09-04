@@ -69,10 +69,10 @@ export default function OrderDrawer({
     <div className="fixed inset-0 z-50 overflow-hidden bg-black/80 backdrop-blur-sm animate-fade-in">
       <div className="absolute inset-y-0 right-0 max-w-full flex">
         
-        <div className="w-screen max-w-md bg-[#111111] border-l border-gray-900 shadow-2xl flex flex-col justify-between">
+        <div className="w-screen max-w-md bg-[#111111] border-l border-[#fdb813]/15 shadow-[−30px_0_60px_rgba(253,184,19,0.03)] flex flex-col justify-between">
           
           {/* Header */}
-          <div className="p-6 border-b border-gray-800 bg-[#0b0c0e] flex items-center justify-between">
+          <div className="p-6 pt-[max(1.5rem,env(safe-area-inset-top))] border-b border-gray-800 bg-[#0b0c0e] flex items-center justify-between">
             <div className="flex items-center gap-3">
               <ShoppingBag className="w-5 h-5 text-[#fdb813]" />
               <h2 className="text-lg font-black uppercase text-white tracking-widest">Order Tray</h2>
@@ -223,7 +223,7 @@ export default function OrderDrawer({
 
           {/* Footer Checkout Controls */}
           {cartItems.length > 0 && (
-            <div className="p-6 border-t border-gray-800 bg-[#0b0c0e] space-y-4">
+            <div className="p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] border-t border-gray-800 bg-[#0b0c0e] space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Subtotal</span>
                 <span className="text-2xl font-black text-white">₹{subtotal}</span>

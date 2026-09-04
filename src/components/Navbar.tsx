@@ -33,8 +33,8 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProp
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-black/90 backdrop-blur-md py-3 border-b border-gray-900" : "bg-transparent py-5"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 pt-[env(safe-area-inset-top)] ${
+        scrolled ? "bg-[#0b0c0e]/95 backdrop-blur-md pb-3 border-b border-[#fdb813]/20 shadow-[0_4px_30px_rgba(253,184,19,0.05)]" : "bg-transparent pb-5 pt-[max(env(safe-area-inset-top),1.25rem)]"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,7 +66,7 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProp
               <Link
                 key={link.href}
                 href={link.href}
-                className="group relative text-base font-bold tracking-[0.2em] uppercase text-white/90 hover:text-white"
+                className="group relative text-base font-bold tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
                 <motion.span
@@ -156,7 +156,7 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProp
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-gray-900 shadow-2xl overflow-hidden"
+            className="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-gray-900 shadow-2xl overflow-hidden pb-[env(safe-area-inset-bottom)]"
           >
             <div className="px-6 py-8 flex flex-col items-center space-y-1">
               {navLinks.map((link, idx) => (

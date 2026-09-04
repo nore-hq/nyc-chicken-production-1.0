@@ -73,7 +73,7 @@ export default function Home() {
           className="w-full h-full object-cover opacity-60"
           disablePictureInPicture
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/50 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-[#fdb813]/[0.03] to-black/50 pointer-events-none" />
       </div>
 
       <div className="relative z-10 flex flex-col flex-grow">

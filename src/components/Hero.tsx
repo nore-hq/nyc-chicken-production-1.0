@@ -40,8 +40,11 @@ export default function Hero() {
       />
 
       {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-[#0b0c0e]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-[#0b0c0e]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+
+      {/* Checkerboard bottom border */}
+      <div className="absolute bottom-0 left-0 right-0 h-2 bg-checkerboard z-20 opacity-80" />
 
       {/* Decorative corner accents */}
       <div className="absolute top-20 left-6 w-16 h-16 border-l-2 border-t-2 border-[#fdb813]/20 pointer-events-none hidden md:block" />
@@ -53,6 +56,8 @@ export default function Hero() {
         animate="visible"
         className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 text-center flex flex-col items-center"
       >
+        {/* Subtle ambient glow behind text */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-64 bg-[#fdb813]/15 rounded-full blur-[120px] pointer-events-none -z-10" />
         <motion.div 
           variants={itemVariants} 
           className="flex items-center gap-4 mb-6 sm:mb-10 opacity-90"
@@ -113,7 +118,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.6 }}
         transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
         <span className="text-[8px] sm:text-[9px] text-white/60 font-bold tracking-[0.3em] uppercase font-sans">
           Scroll

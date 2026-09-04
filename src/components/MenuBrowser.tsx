@@ -57,12 +57,16 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
   };
 
   return (
-    <section id="menu-full" className="relative py-24 bg-black/60 backdrop-blur-sm">
+    <section id="menu-full" className="relative py-24 bg-[#0b0c0e] overflow-hidden">
+      {/* Transparent yellow gradient background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#fdb813]/15 via-[#0b0c0e]/80 to-[#0b0c0e]" />
+      <div className="absolute top-0 left-0 right-0 h-2 bg-checkerboard z-0 opacity-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         
         {/* Sticky Close Button */}
         {onClose && (
-          <div className="sticky top-24 z-40 flex justify-end mb-4 -mt-16">
+          <div className="sticky top-[max(6rem,env(safe-area-inset-top))] z-40 flex justify-end mb-4 -mt-16">
             <button
               onClick={onClose}
               className="flex items-center gap-2 px-5 py-2.5 bg-black/90 border border-gray-800 text-white rounded-full font-bold text-xs uppercase tracking-widest hover:border-[#fdb813] hover:text-[#fdb813] transition-colors shadow-2xl backdrop-blur-md"
@@ -90,7 +94,7 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
         </motion.div>
 
         {/* Controls */}
-        <div className="mb-12 border-b border-gray-900 pb-8 space-y-8 font-sans">
+        <div className="mb-12 border-b border-gray-900 pb-8 space-y-8 font-sans relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             
             <div className="relative w-full md:w-96">
@@ -100,7 +104,7 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                 placeholder="Search menu..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 pr-4 py-2 bg-transparent border-b border-gray-800 text-white placeholder-gray-600 focus:outline-none focus:border-[#fdb813] transition-all text-sm rounded-none"
+                className="w-full pl-8 pr-4 py-2 bg-transparent border-b border-[#fdb813]/30 text-white placeholder-gray-500 focus:outline-none focus:border-[#fdb813] transition-all text-sm rounded-none"
               />
               {searchQuery && (
                 <button
@@ -145,8 +149,8 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                   onClick={() => setActiveCategory(cat.id)}
                   className={`relative text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] whitespace-nowrap transition-all duration-300 ${
                     isActive
-                      ? "text-white after:content-[''] after:absolute after:-bottom-3 after:left-0 after:w-full after:h-[2px] after:bg-[#fdb813]"
-                      : "text-gray-600 hover:text-gray-300"
+                      ? "text-[#fdb813] after:content-[''] after:absolute after:-bottom-3 after:left-0 after:w-full after:h-[2px] after:bg-[#fdb813]"
+                      : "text-gray-500 hover:text-[#fdb813]/70"
                   }`}
                 >
                   {cat.name}
@@ -165,9 +169,9 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-24 bg-[#111111] rounded-3xl border border-gray-900"
+                className="text-center py-24 bg-[#111111]/80 backdrop-blur-md rounded-3xl border border-gray-900"
               >
-                <Info className="w-8 h-8 text-gray-600 mx-auto mb-4" />
+                <Info className="w-8 h-8 text-gray-500 mx-auto mb-4" />
                 <p className="text-gray-400 font-light text-sm sm:text-base font-sans">No offerings match your refined selection.</p>
               </motion.div>
             ) : (
@@ -189,18 +193,18 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, delay: idx > 10 ? 0 : idx * 0.05 }}
                       key={item.id} 
-                      className="group relative flex flex-col justify-between border-b border-gray-900 pb-8 hover:bg-[#111111] p-4 -mx-4 rounded-2xl transition-colors duration-300"
+                      className="group relative flex flex-col justify-between bg-[#111111]/80 backdrop-blur-md p-6 sm:p-8 rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(253,184,19,0.1)] border border-gray-900 hover:border-[#fdb813]/40"
                     >
                       <div className="space-y-4">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-center gap-2 mb-1">
                             {item.subcategory && (
-                              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-[#fdb813] bg-[#fdb813]/10 px-2 py-0.5 rounded-full font-sans">
+                              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-[#fdb813] bg-[#fdb813]/10 px-2.5 py-1 rounded-full font-sans">
                                 {item.subcategory}
                               </span>
                             )}
                             {item.isBestSeller && (
-                              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-black bg-[#fdb813] px-2 py-0.5 rounded-full font-sans">
+                              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-black bg-[#fdb813] px-2.5 py-1 rounded-full font-sans">
                                 Best Seller
                               </span>
                             )}
@@ -241,10 +245,10 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => handleCardClick(item)}
-                          className={`flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] transition-colors border px-4 py-2 rounded-full font-sans ${
+                          className={`flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] transition-colors border px-5 py-2.5 rounded-full font-sans ${
                             isInCart
                               ? "border-[#fdb813] text-[#fdb813] bg-[#fdb813]/10"
-                              : "border-gray-800 text-gray-400 hover:border-white hover:text-black hover:bg-white"
+                              : "border-gray-700 text-gray-400 hover:border-[#fdb813] hover:text-[#fdb813] hover:bg-[#fdb813]/5"
                           }`}
                         >
                           {isInCart ? (
@@ -282,7 +286,7 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="w-full max-w-lg bg-[#111111] border border-gray-800 p-8 sm:p-10 rounded-[2rem] shadow-2xl relative"
+              className="w-full max-w-lg max-h-[85vh] overflow-y-auto bg-[#111111] border border-gray-800 p-8 sm:p-10 rounded-[2rem] shadow-2xl relative scrollbar-hide"
             >
               
               <button

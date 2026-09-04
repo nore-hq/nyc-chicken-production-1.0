@@ -23,8 +23,10 @@ export default function StoreShowcase() {
   ];
 
   return (
-    <section id="ambiance" className="relative py-20 md:py-24 bg-transparent border-t border-gray-900/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="ambiance" className="relative py-20 md:py-24 bg-transparent border-t border-[#fdb813]/10 overflow-hidden">
+      {/* Subtle yellow ambient glow */}
+      <div className="absolute top-20 left-0 w-[400px] h-[400px] bg-[#fdb813]/[0.04] rounded-full blur-[120px] pointer-events-none" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -90,7 +92,7 @@ export default function StoreShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-16 md:mt-24 text-center max-w-2xl mx-auto bg-black/40 backdrop-blur-sm border border-gray-900 p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem]"
+          className="mt-16 md:mt-24 text-center max-w-2xl mx-auto bg-black/40 backdrop-blur-sm border border-[#fdb813]/10 p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem]"
         >
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#fdb813] mb-4 font-sans">
             International Presence

@@ -26,6 +26,14 @@ export const metadata: Metadata = {
   description: "The Taste of New York City. Premium fine dining and authentic flavors.",
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

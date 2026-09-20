@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MENU_ITEMS } from "@/data/menuData";
+import { useMenuData } from "@/context/MenuContext";
 import { ChevronRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -11,6 +11,7 @@ interface MenuPreviewProps {
 }
 
 export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) {
+  const { items: MENU_ITEMS } = useMenuData();
   const [isMobile, setIsMobile] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 

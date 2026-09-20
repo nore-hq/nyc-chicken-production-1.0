@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter, Cinzel } from "next/font/google";
 import "./globals.css";
 import LoadingScreen from "@/components/LoadingScreen";
+import { MenuProvider } from "@/context/MenuContext";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -42,8 +43,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${playfair.variable} ${inter.variable} ${cinzel.variable} font-sans bg-[#0b0c0e] text-white antialiased`}>
-        <LoadingScreen />
-        {children}
+        <MenuProvider>
+          <LoadingScreen />
+          {children}
+        </MenuProvider>
       </body>
     </html>
   );

@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nyc-chicken",
+  "compatibility_date": "2024-03-20",
+  "pages_build_output_dir": "out",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nyc-chicken-db",
+      "database_id": "49cbd2b5-0383-4cd3-8482-38485fd2e61c"
+    }
+  ],
+  "vars": {
+    "JWT_SECRET": "dev_secret_key_12345"
+  }
+}

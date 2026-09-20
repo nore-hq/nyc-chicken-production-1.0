@@ -13,6 +13,7 @@ export interface MenuItem {
   tag?: string;
   options?: string[];
   image?: string;
+  isAvailable?: boolean;
 }
 
 export interface MenuCategory {

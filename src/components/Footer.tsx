@@ -63,12 +63,21 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-[#fdb813] flex-shrink-0" />
-                <a
-                  href="tel:8111809991"
-                  className="hover:text-[#fdb813] font-bold transition-colors"
-                >
-                  +91 8111809991
-                </a>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <a
+                    href="tel:8111809991"
+                    className="hover:text-[#fdb813] font-bold transition-colors"
+                  >
+                    +91 8111809991
+                  </a>
+                  <span className="text-gray-600">|</span>
+                  <Link
+                    href="/admin/login"
+                    className="text-gray-500 hover:text-[#fdb813] transition-colors text-xs font-normal"
+                  >
+                    Admin Login
+                  </Link>
+                </div>
               </li>
             </ul>
           </motion.div>

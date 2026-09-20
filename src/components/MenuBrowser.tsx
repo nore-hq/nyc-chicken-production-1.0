@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { MENU_CATEGORIES, MENU_ITEMS, MenuItem } from "../data/menuData";
+import { MenuItem } from "../data/menuData";
+import { useMenuData } from "../context/MenuContext";
 import { Search, Flame, Leaf, Sparkles, Plus, Check, X, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,6 +13,7 @@ interface MenuBrowserProps {
 }
 
 export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuBrowserProps) {
+  const { items: MENU_ITEMS, categories: MENU_CATEGORIES } = useMenuData();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [vegOnly, setVegOnly] = useState<boolean>(false);

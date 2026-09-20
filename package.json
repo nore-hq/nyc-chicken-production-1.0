@@ -4,9 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:full": "next build && wrangler pages dev out --d1 DB=nyc-chicken-db",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:create": "wrangler d1 create nyc-chicken-db",
+    "db:migrate:local": "wrangler d1 execute nyc-chicken-db --local --file=./migrations/0001_initial_schema.sql && wrangler d1 execute nyc-chicken-db --local --file=./migrations/0002_seed_menu_data.sql",
+    "db:migrate:remote": "wrangler d1 execute nyc-chicken-db --remote --file=./migrations/0001_initial_schema.sql && wrangler d1 execute nyc-chicken-db --remote --file=./migrations/0002_seed_menu_data.sql",
+    "pages:dev": "wrangler pages dev out --d1 DB=nyc-chicken-db",
+    "pages:deploy": "npm run build && wrangler pages deploy out"
   },
   "dependencies": {
     "framer-motion": "^12.43.0",
@@ -23,6 +29,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^3.111.0",
+    "@cloudflare/workers-types": "^4.20250214.0"
   }
 }

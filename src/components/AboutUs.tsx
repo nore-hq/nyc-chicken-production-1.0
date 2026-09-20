@@ -61,11 +61,10 @@ export default function AboutUs() {
           <div className="relative">
             {/* Main Image Container */}
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-              <Image 
-                src="https://images.unsplash.com/photo-1496442226666-8d4d0e2815cb?q=80&w=2070&auto=format&fit=crop" 
-                alt="New York City vibe" 
-                fill 
-                className="object-cover hover:scale-105 transition-transform duration-700 ease-in-out opacity-80"
+              <img 
+                src="/store_exterior.jpg" 
+                alt="New York Chicken Store" 
+                className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out opacity-80"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               

@@ -281,8 +281,8 @@ export default function AdminDashboard() {
                     type="number" 
                     min="0"
                     step="0.01"
-                    value={editingItem?.price || 0} 
-                    onChange={e => setEditingItem({...editingItem, price: parseFloat(e.target.value)})}
+                    value={editingItem?.price ?? ""} 
+                    onChange={e => setEditingItem({...editingItem, price: e.target.value === "" ? ("" as unknown as number) : parseFloat(e.target.value)})}
                     className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#fdb813]"
                   />
                 </div>

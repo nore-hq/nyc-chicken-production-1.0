@@ -10,6 +10,7 @@ import BrochureViewer from "@/components/BrochureViewer";
 import OrderDrawer, { CartItem } from "@/components/OrderDrawer";
 import StoreShowcase from "@/components/StoreShowcase";
 import Footer from "@/components/Footer";
+import AboutUs from "@/components/AboutUs";
 import { MenuItem } from "@/data/menuData";
 
 export default function Home() {
@@ -92,6 +93,7 @@ export default function Home() {
       {/* Main Landing Sections */}
       <main className="flex-grow">
         <Hero />
+        <AboutUs />
         
         {/* Menu Interaction Flow */}
         <div id="menu">

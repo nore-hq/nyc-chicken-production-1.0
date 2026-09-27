@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Plus, Search, Edit3, Trash2, X } from "lucide-react";
+import { LogOut, Plus, Search, Edit3, Trash2, X, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useMenuData } from "@/context/MenuContext";
 import { MenuItem } from "@/data/menuData";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function AdminDashboard() {
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Partial<MenuItem> | null>(null);
+  const [editingItem, setEditingItem] = useState<(Partial<MenuItem> & { image_url?: string }) | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   // Checking auth on mount
@@ -63,10 +64,14 @@ export default function AdminDashboard() {
       const url = isNew ? "/api/admin/menu" : `/api/admin/menu/${editingItem?.id}`;
       const method = isNew ? "POST" : "PUT";
       
+      const imageUrl = editingItem?.image || editingItem?.image_url || null;
+
       const payload = {
         ...editingItem,
         id: editingItem?.id || `item_${Date.now()}`,
         category_id: editingItem?.category,
+        image_url: imageUrl,
+        image: imageUrl,
       };
 
       const res = await fetch(url, {
@@ -90,12 +95,15 @@ export default function AdminDashboard() {
   };
 
   const openAddModal = () => {
-    setEditingItem({ category: categories[0]?.id, price: 0 });
+    setEditingItem({ category: categories[0]?.id, price: 0, image: "", image_url: "" });
     setIsModalOpen(true);
   };
 
   const openEditModal = (item: MenuItem) => {
-    setEditingItem(item);
+    setEditingItem({
+      ...item,
+      image_url: item.image || "",
+    });
     setIsModalOpen(true);
   };
 
@@ -191,7 +199,7 @@ export default function AdminDashboard() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-white/5 text-xs uppercase tracking-wider text-gray-500">
-                  <th className="p-4 font-medium">Item Name</th>
+                  <th className="p-4 font-medium">Item</th>
                   <th className="p-4 font-medium">Category</th>
                   <th className="p-4 font-medium w-32">Price (₹)</th>
                   <th className="p-4 font-medium text-right">Actions</th>
@@ -201,8 +209,23 @@ export default function AdminDashboard() {
                 {filteredItems.map(item => (
                   <tr key={item.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4">
-                      <div className="font-medium text-white">{item.name}</div>
-                      {item.description && <div className="text-xs text-gray-500 mt-1 line-clamp-1">{item.description}</div>}
+                      <div className="flex items-center gap-3">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-12 h-12 rounded-xl object-cover bg-black/60 border border-white/10 flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-gray-500">
+                            <ImageIcon className="w-5 h-5 text-gray-600" />
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-medium text-white">{item.name}</div>
+                          {item.description && <div className="text-xs text-gray-500 mt-1 line-clamp-1">{item.description}</div>}
+                        </div>
+                      </div>
                     </td>
                     <td className="p-4 text-sm text-gray-400">
                       {categories.find(c => c.id === item.category)?.name || item.category}
@@ -246,14 +269,22 @@ export default function AdminDashboard() {
               </button>
             </div>
             
-            <form onSubmit={handleSaveItem} className="p-6 space-y-4">
+            <form onSubmit={handleSaveItem} className="p-6 space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Item Image</label>
+                <ImageUploader
+                  imageUrl={editingItem?.image || editingItem?.image_url || ""}
+                  onImageChange={(url) => setEditingItem(prev => ({ ...prev, image: url, image_url: url }))}
+                />
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">Item Name</label>
                 <input 
                   required
                   type="text" 
                   value={editingItem?.name || ""} 
-                  onChange={e => setEditingItem({...editingItem, name: e.target.value})}
+                  onChange={e => setEditingItem(prev => ({ ...prev, name: e.target.value }))}
                   className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#fdb813]"
                   placeholder="e.g. Classic Chicken Burger"
                 />
@@ -265,7 +296,7 @@ export default function AdminDashboard() {
                   <select 
                     required
                     value={editingItem?.category || ""} 
-                    onChange={e => setEditingItem({...editingItem, category: e.target.value})}
+                    onChange={e => setEditingItem(prev => ({ ...prev, category: e.target.value }))}
                     className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#fdb813]"
                   >
                     <option value="" disabled>Select category</option>
@@ -282,7 +313,7 @@ export default function AdminDashboard() {
                     min="0"
                     step="0.01"
                     value={editingItem?.price ?? ""} 
-                    onChange={e => setEditingItem({...editingItem, price: e.target.value === "" ? ("" as unknown as number) : parseFloat(e.target.value)})}
+                    onChange={e => setEditingItem(prev => ({ ...prev, price: e.target.value === "" ? ("" as unknown as number) : parseFloat(e.target.value) }))}
                     className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#fdb813]"
                   />
                 </div>
@@ -292,7 +323,7 @@ export default function AdminDashboard() {
                 <label className="block text-sm font-medium text-gray-400 mb-1">Description (Optional)</label>
                 <textarea 
                   value={editingItem?.description || ""} 
-                  onChange={e => setEditingItem({...editingItem, description: e.target.value})}
+                  onChange={e => setEditingItem(prev => ({ ...prev, description: e.target.value }))}
                   className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#fdb813] min-h-[80px]"
                   placeholder="Enter item description..."
                 />

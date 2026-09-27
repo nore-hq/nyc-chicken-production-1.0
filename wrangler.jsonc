@@ -1,16 +1,18 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "nyc-chicken",
+  "name": "nyc-chicken-app",
   "compatibility_date": "2024-03-20",
   "pages_build_output_dir": "out",
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "nyc-chicken-db",
-      "database_id": "49cbd2b5-0383-4cd3-8482-38485fd2e61c"
+      "database_id": "31de9fb6-5887-4544-b8db-2f729240dd9c"
     }
   ],
   "vars": {
-    "JWT_SECRET": "dev_secret_key_12345"
+    "JWT_SECRET": "dev_secret_key_12345",
+    "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME": "xdxtq8lm",
+    "NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET": "nyc_chicken_menu"
   }
 }

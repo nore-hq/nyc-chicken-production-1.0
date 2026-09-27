@@ -30,7 +30,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const data = await context.request.json() as any;
     const {
       id, name, description, category_id, subcategory, price, prices,
-      is_veg, is_spicy, is_best_seller, is_grilled, tag, options, image_url, is_available
+      is_veg, is_spicy, is_best_seller, is_grilled, tag, options, image_url, image, is_available
     } = data;
 
     if (!id || !name || !category_id || price === undefined) {
@@ -39,6 +39,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const prices_json = prices ? JSON.stringify(prices) : null;
     const options_json = options ? JSON.stringify(options) : null;
+    const finalImageUrl = image_url || image || null;
 
     const result = await context.env.DB.prepare(
       `INSERT INTO menu_items 
@@ -47,7 +48,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     ).bind(
       id, name, description || null, category_id, subcategory || null, price, prices_json,
       is_veg ? 1 : 0, is_spicy ? 1 : 0, is_best_seller ? 1 : 0, is_grilled ? 1 : 0,
-      tag || null, options_json, image_url || null, is_available === false ? 0 : 1
+      tag || null, options_json, finalImageUrl, is_available === false ? 0 : 1
     ).run();
 
     return new Response(JSON.stringify({ success: true }), {

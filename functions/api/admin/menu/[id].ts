@@ -7,7 +7,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
     
     const {
       name, description, category_id, subcategory, price, prices,
-      is_veg, is_spicy, is_best_seller, is_grilled, tag, options, image_url, is_available
+      is_veg, is_spicy, is_best_seller, is_grilled, tag, options, image_url, image, is_available
     } = data;
 
     if (!name || !category_id || price === undefined) {
@@ -16,6 +16,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
 
     const prices_json = prices ? JSON.stringify(prices) : null;
     const options_json = options ? JSON.stringify(options) : null;
+    const finalImageUrl = image_url || image || null;
 
     await context.env.DB.prepare(
       `UPDATE menu_items SET 
@@ -26,7 +27,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
     ).bind(
       name, description || null, category_id, subcategory || null, price,
       prices_json, is_veg ? 1 : 0, is_spicy ? 1 : 0, is_best_seller ? 1 : 0, is_grilled ? 1 : 0,
-      tag || null, options_json, image_url || null, is_available === false ? 0 : 1,
+      tag || null, options_json, finalImageUrl, is_available === false ? 0 : 1,
       id
     ).run();
 
@@ -58,6 +59,10 @@ export const onRequestPatch: PagesFunction<Env> = async (context) => {
     if (data.prices !== undefined) {
       updates.push("prices_json = ?");
       bindings.push(data.prices ? JSON.stringify(data.prices) : null);
+    }
+    if (data.image_url !== undefined || data.image !== undefined) {
+      updates.push("image_url = ?");
+      bindings.push(data.image_url ?? data.image ?? null);
     }
     // ... add more if needed
 

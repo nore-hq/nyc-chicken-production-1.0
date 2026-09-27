@@ -7,5 +7,12 @@
     "JWT_SECRET": "dev_secret_key_12345",
     "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME": "xdxtq8lm",
     "NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET": "nyc_chicken_menu"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nyc-chicken-db",
+      "database_id": "31de9fb6-5887-4544-b8db-2f729240dd9c"
+    }
+  ]
 }

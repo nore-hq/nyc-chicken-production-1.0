@@ -45,10 +45,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     username = username.trim().toLowerCase();
     password = password.trim();
 
-    // Auto-initialize DB if needed
-    await ensureDB(context.env.DB);
+    const db = context.env?.DB;
+    if (!db) {
+      return new Response(JSON.stringify({
+        error: "Database is not configured for this deployment. Add the Cloudflare Pages D1 binding named DB and redeploy."
+      }), { status: 503, headers: jsonHeaders });
+    }
 
-    const userResult = await context.env.DB.prepare(
+    // Auto-initialize DB if needed
+    await ensureDB(db);
+
+    const userResult = await db.prepare(
       "SELECT id, username, password_hash, salt, name FROM admin_users WHERE LOWER(username) = ?"
     ).bind(username).first<{ id: string, username: string, password_hash: string, salt: string, name: string }>();
 

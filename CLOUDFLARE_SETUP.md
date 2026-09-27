@@ -76,7 +76,9 @@ Deploy both the frontend and the serverless functions in one command:
 ```bash
 npm run pages:deploy
 ```
-*(Alternatively, connect your GitHub repository directly in the Cloudflare Dashboard and it will auto-deploy on every push!)*
+This project uses `wrangler.jsonc` as the source of truth for Pages configuration, including the D1 binding named `DB`. Wrangler supports JSONC configuration files; a `wrangler.toml` file is not required. If Cloudflare says bindings are managed through a Wrangler file, edit the binding in `wrangler.jsonc`, commit the change, and trigger a new production deployment. The dashboard may show those settings as read-only.
+
+For Git-connected deployments, verify that the Pages project's root directory is `nyc-chicken-production-1.0` (the directory containing `wrangler.jsonc`), that the production branch includes the file, and that the Pages build system supports Wrangler configuration files (V2 or later). With direct uploads, deploy from this project directory so Wrangler finds the config file. The binding name is case-sensitive and must stay `DB`; Cloudinary image settings do not provide this database binding.
 
 ---
 

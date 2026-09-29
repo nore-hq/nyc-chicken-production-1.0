@@ -46,7 +46,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
             isGrilled: item.is_grilled,
             tag: item.tag || undefined,
             options: item.options || undefined,
-            image: item.image_url || undefined,
+            image: item.image_url || item.image || undefined,
             isAvailable: item.is_available,
           }));
           setItems(mappedItems);

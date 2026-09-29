@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useMenuData } from "@/context/MenuContext";
+import Image from "next/image";
 import { ChevronRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -72,15 +73,26 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                 className="group relative bg-[#111111] rounded-3xl overflow-hidden border border-[#fdb813]/20 hover:border-[#fdb813] transition-all duration-500 shadow-[0_0_30px_rgba(253,184,19,0.1)] hover:shadow-[0_0_40px_rgba(253,184,19,0.3)] cursor-pointer"
               >
                 <div className="relative h-72 w-full bg-black overflow-hidden">
-                  <video
-                    src={cardVideos[idx % cardVideos.length]}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    disablePictureInPicture
-                    className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-                  />
+                  {item.image ? (
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      unoptimized
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                    />
+                  ) : (
+                    <video
+                      src={cardVideos[idx % cardVideos.length]}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      disablePictureInPicture
+                      className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/40 to-transparent opacity-90" />
                   <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm border border-white/10 px-3 py-1 rounded-full flex items-center gap-2">
                     <Play className="w-3 h-3 text-[#fdb813] fill-[#fdb813]" />
@@ -125,6 +137,18 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
                 className="flex items-center justify-between p-5 bg-black/40 backdrop-blur-sm rounded-2xl border border-[#fdb813]/20 hover:border-[#fdb813]/50 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(253,184,19,0.05)]"
               >
+                {item.image && (
+                  <div className="relative w-16 h-16 shrink-0 overflow-hidden rounded-xl bg-black mr-4">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      unoptimized
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
                 <div className="flex-1 min-w-0 pr-4">
                   <h3
                     className="text-base text-white mb-1 truncate"

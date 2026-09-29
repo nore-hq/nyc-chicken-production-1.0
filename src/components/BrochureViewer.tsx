@@ -1,22 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function BrochureViewer() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 14;
-
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage((p) => p + 1);
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage((p) => p - 1);
-  };
 
   return (
     <section id="brochure" className="py-20 md:py-24 bg-black/40 backdrop-blur-sm relative overflow-hidden border-t border-[#fdb813]/10">
@@ -55,87 +47,76 @@ export default function BrochureViewer() {
       </div>
 
       {/* Brochure Lightbox */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
-          >
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.1, rotate: 90 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2.5 bg-gray-900/80 rounded-full text-gray-400 hover:text-white hover:bg-[#fdb813] hover:text-black transition-all z-[70]"
-            >
-              <X className="w-6 h-6 sm:w-7 sm:h-7" />
-            </motion.button>
-
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="relative w-full max-w-4xl h-[80vh] sm:h-[85vh] flex flex-col items-center justify-center"
-            >
-              {/* Image Container */}
-              <div className="relative w-full h-full shadow-2xl bg-[#0b0c0e] border border-gray-900 rounded-2xl sm:rounded-lg flex items-center justify-center overflow-hidden">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentPage}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ duration: 0.25 }}
-                    className="relative w-full h-full"
-                  >
-                    <Image
-                      src={`/brochure/page_${currentPage}.png`}
-                      alt={`NYC Menu Page ${currentPage}`}
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Controls */}
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-1 sm:-mx-14 pointer-events-none">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={handlePrev}
-                  disabled={currentPage === 1}
-                  className="pointer-events-auto p-3 sm:p-4 bg-gray-900/80 hover:bg-[#fdb813] text-white hover:text-black disabled:opacity-30 transition-all rounded-full border border-gray-700 shadow-lg"
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 p-3 pt-16 backdrop-blur-md sm:p-8"
+              >
+                <motion.div
+                  initial={{ scale: 0.98, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.98, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex h-full min-h-0 w-full max-w-4xl flex-col"
                 >
-                  <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={handleNext}
-                  disabled={currentPage === totalPages}
-                  className="pointer-events-auto p-3 sm:p-4 bg-gray-900/80 hover:bg-[#fdb813] text-white hover:text-black disabled:opacity-30 transition-all rounded-full border border-gray-700 shadow-lg"
+                <div className="mb-3 flex shrink-0 items-center justify-between px-1">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
+                    Original Menu
+                  </span>
+                  <span className="text-xs font-medium text-gray-400">
+                    {totalPages} pages
+                  </span>
+                </div>
+                <div
+                  aria-label="Brochure pages"
+                  className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-2xl border border-gray-800 bg-[#0b0c0e] p-2 shadow-2xl sm:rounded-3xl sm:p-4"
                 >
-                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <div className="space-y-3 sm:space-y-5">
+                    {Array.from({ length: totalPages }, (_, index) => {
+                      const page = index + 1;
+                      return (
+                        <div
+                          key={page}
+                          className="overflow-hidden rounded-xl border border-white/10 bg-white shadow-lg sm:rounded-2xl"
+                        >
+                          <Image
+                            src={`/brochure/page_${page}.png`}
+                            alt={`NYC Menu brochure page ${page}`}
+                            width={1241}
+                            height={1754}
+                            sizes="(max-width: 768px) 100vw, 896px"
+                            priority={page === 1}
+                            className="block h-auto w-full"
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                </motion.div>
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close brochure"
+                  className="absolute right-4 top-4 z-[70] rounded-full border border-gray-700 bg-gray-900/90 p-2.5 text-white shadow-lg transition-colors hover:border-[#fdb813] hover:bg-[#fdb813] hover:text-black sm:right-6 sm:top-6"
+                >
+                  <X className="h-5 w-5" />
                 </motion.button>
-              </div>
-
-              {/* Page indicator */}
-              <div className="mt-4 sm:mt-6 text-xs font-bold tracking-[0.2em] text-gray-500 font-sans">
-                PAGE <span className="text-[#fdb813]">{currentPage}</span> OF{" "}
-                {totalPages}
-              </div>
-            </motion.div>
-          </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 }

@@ -11,10 +11,9 @@ interface NavbarProps {
   onOpenCart: () => void;
   onOpenMenu?: () => void;
 }
-
+{/* { href: "#brochure", label: "Brochure" }, */ }
 const navLinks = [
   { href: "#menu", label: "Menu" },
-  { href: "#brochure", label: "Brochure" },
   { href: "#ambiance", label: "Ambiance" },
   { href: "#location", label: "Location" },
 ];
@@ -33,16 +32,15 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProp
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 pt-[env(safe-area-inset-top)] ${
-        scrolled ? "bg-[#0b0c0e]/95 backdrop-blur-md pb-3 border-b border-[#fdb813]/20 shadow-[0_4px_30px_rgba(253,184,19,0.05)]" : "bg-transparent pb-5 pt-[max(env(safe-area-inset-top),1.25rem)]"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 pt-[env(safe-area-inset-top)] ${scrolled ? "bg-[#0b0c0e]/95 backdrop-blur-md pb-3 border-b border-[#fdb813]/20 shadow-[0_4px_30px_rgba(253,184,19,0.05)]" : "bg-transparent pb-5 pt-[max(env(safe-area-inset-top),1.25rem)]"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.08, rotate: -2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
@@ -93,6 +91,15 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProp
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
               className="hidden lg:flex items-center gap-2 px-5 py-2 rounded-full bg-[#fdb813] text-black text-xs font-bold tracking-[0.2em] uppercase shadow-[0_0_15px_rgba(253,184,19,0.3)] hover:shadow-[0_0_25px_rgba(253,184,19,0.5)] transition-shadow duration-300"
             >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-4 w-4 shrink-0 text-[#128C7E]"
+                fill="currentColor"
+              >
+                <path d="M12.04 2a9.94 9.94 0 0 0-8.53 15.05L2.2 21.8l4.87-1.28A9.96 9.96 0 1 0 12.04 2Zm0 18.1a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-2.89.76.77-2.82-.2-.31a8.1 8.1 0 1 1 6.75 3.68Z" />
+                <path d="M16.5 13.9c-.25-.13-1.48-.73-1.71-.81-.23-.08-.4-.13-.56.13-.17.25-.65.81-.79.98-.15.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.51.11-.11.25-.29.37-.44.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.09 0 1.23.9 2.42 1.02 2.59.13.17 1.77 2.7 4.29 3.78.6.26 1.07.42 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.48-.6 1.69-1.18.21-.59.21-1.09.15-1.19-.06-.11-.23-.17-.48-.29Z" />
+              </svg>
               Order Now
             </motion.button>
 

@@ -7,10 +7,10 @@ export default function AboutUs() {
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#fdb813]/5 to-transparent pointer-events-none" />
       <div className="absolute -left-32 -top-32 w-64 h-64 bg-[#fdb813]/10 blur-[100px] rounded-full pointer-events-none" />
-      
+
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
+
           {/* Text Content */}
           <div className="space-y-8">
             <div>
@@ -23,7 +23,7 @@ export default function AboutUs() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Raised for the World.</span>
               </h2>
             </div>
-            
+
             <div className="space-y-6 text-gray-300 text-lg leading-relaxed font-light">
               <p>
                 New York Chicken has its roots in the United States and the brand reflects the cosmopolitan and multiculturalism of New York City. From the hustle and bustle of Midtown Manhattan to the chaos of the Bronx and Queen's, the city's flavors are captured in New York Chicken's menu.
@@ -40,7 +40,7 @@ export default function AboutUs() {
                 </p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10">
               <div>
                 <p className="text-3xl font-black text-white mb-1">2018</p>
@@ -56,24 +56,24 @@ export default function AboutUs() {
               </div>
             </div>
           </div>
-          
+
           {/* Visual Content */}
           <div className="relative">
             {/* Main Image Container */}
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-              <img 
-                src="/store_exterior.jpg" 
-                alt="New York Chicken Store" 
+              <img
+                src="/store_exterior.jpeg"
+                alt="New York Chicken Store"
                 className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out opacity-80"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              
+
               <div className="absolute bottom-8 left-8 right-8">
                 <Image src="/nyc_logo_latest.png" alt="NYC Logo" width={80} height={80} className="mb-4 drop-shadow-xl" />
-                <p className="text-white font-bold text-xl uppercase tracking-widest drop-shadow-lg">The Flavor of<br/>The City</p>
+                <p className="text-white font-bold text-xl uppercase tracking-widest drop-shadow-lg">The Flavor of<br />The City</p>
               </div>
             </div>
-            
+
             {/* Floating Element */}
             <div className="absolute -bottom-8 -left-8 bg-[#111111] p-6 rounded-2xl border border-white/10 shadow-xl backdrop-blur-md hidden md:block animate-pulse-slow">
               <div className="flex items-center gap-4">
@@ -87,7 +87,7 @@ export default function AboutUs() {
               </div>
             </div>
           </div>
-          
+
         </div>
       </div>
     </section>

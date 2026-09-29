@@ -42,7 +42,7 @@ export default function StoreShowcase() {
             className="text-3xl sm:text-5xl md:text-6xl text-white capitalize tracking-tight"
             style={{ fontFamily: "var(--font-playfair), serif" }}
           >
-            Our Ambiance
+            Come Hangout
           </h2>
           <p className="text-gray-400 text-sm sm:text-base font-light leading-relaxed max-w-lg mx-auto font-sans">
             A refined space designed to elevate your dining experience.
@@ -86,7 +86,7 @@ export default function StoreShowcase() {
           ))}
         </div>
 
-        {/* Global Presence */}
+        {/* Global Presence 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ export default function StoreShowcase() {
           <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed font-sans">
             Expanding across Saudi Arabia, UAE, Qatar, Oman, Kuwait, Egypt, India, Malaysia, Indonesia, Kazakhstan, and the Philippines.
           </p>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

@@ -62,7 +62,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col selection:bg-[#fdb813] selection:text-black relative">
-      
+
       {/* Global Background Video */}
       <div className="fixed inset-0 z-0">
         <video
@@ -79,8 +79,8 @@ export default function Home() {
 
       <div className="relative z-10 flex flex-col flex-grow">
         {/* Navbar */}
-        <Navbar 
-          cartCount={cartCount} 
+        <Navbar
+          cartCount={cartCount}
           onOpenCart={() => setIsCartOpen(true)}
           onOpenMenu={() => {
             setIsMenuExpanded(true);
@@ -90,63 +90,65 @@ export default function Home() {
           }}
         />
 
-      {/* Main Landing Sections */}
-      <main className="flex-grow">
-        <Hero />
-        <AboutUs />
-        
-        {/* Menu Interaction Flow */}
-        <div id="menu">
-          <MenuPreview 
-            isExpanded={isMenuExpanded} 
-            onExpand={() => {
-              setIsMenuExpanded(true);
-              setTimeout(() => {
-                document.getElementById('menu-full')?.scrollIntoView({ behavior: 'smooth' });
-              }, 100);
-            }} 
-          />
-          {/* Full Menu Expansion */}
-          {isMenuExpanded && (
-            <div className="relative">
-              <MenuBrowser 
-                onAddToCart={handleAddToCart}
-                cartItemIds={cartItemIds}
-                onClose={() => {
-                  setIsMenuExpanded(false);
-                  document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              />
-              <div className="flex justify-center pb-24 -mt-12 relative z-20">
-                <button
-                  onClick={() => setIsMenuExpanded(false)}
-                  className="px-8 py-3 bg-[#111111] border border-gray-800 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:border-[#fdb813] hover:text-[#fdb813] transition-colors shadow-lg"
-                >
-                  Collapse Menu ↑
-                </button>
+        {/* Main Landing Sections */}
+        <main className="flex-grow">
+          <Hero />
+
+
+          {/* Menu Interaction Flow */}
+          <div id="menu">
+            <MenuPreview
+              isExpanded={isMenuExpanded}
+              onExpand={() => {
+                setIsMenuExpanded(true);
+                setTimeout(() => {
+                  document.getElementById('menu-full')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
+            />
+            {/* Full Menu Expansion */}
+            {isMenuExpanded && (
+              <div className="relative">
+                <MenuBrowser
+                  onAddToCart={handleAddToCart}
+                  cartItemIds={cartItemIds}
+                  onClose={() => {
+                    setIsMenuExpanded(false);
+                    document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                />
+                <div className="flex justify-center pb-24 -mt-12 relative z-20">
+                  <button
+                    onClick={() => setIsMenuExpanded(false)}
+                    className="px-8 py-3 bg-[#111111] border border-gray-800 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:border-[#fdb813] hover:text-[#fdb813] transition-colors shadow-lg"
+                  >
+                    Collapse Menu ↑
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Social Proof / Instagram */}
-        </div>
+            {/* Social Proof / Instagram */}
+          </div>
 
-        <BrochureViewer />
-        <InstagramReelsWidget />
-        <StoreShowcase />
-      </main>
+          <AboutUs />
 
-      {/* Footer */}
-      <Footer />
+          <InstagramReelsWidget />
+          <StoreShowcase />
+          <BrochureViewer />
+        </main>
 
-      {/* Floating Cart / WhatsApp Order Drawer */}
-      <OrderDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onClearCart={handleClearCart}
-      />
+        {/* Footer */}
+        <Footer />
+
+        {/* Floating Cart / WhatsApp Order Drawer */}
+        <OrderDrawer
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          cartItems={cartItems}
+          onUpdateQuantity={handleUpdateQuantity}
+          onClearCart={handleClearCart}
+        />
       </div>
     </div>
   );

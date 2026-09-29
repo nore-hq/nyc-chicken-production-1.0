@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className="bg-[#0b0c0e]/95 backdrop-blur-md text-white pt-16 sm:pt-20 pb-[max(2.5rem,env(safe-area-inset-bottom))] border-t border-[#fdb813]/20 relative z-10 overflow-hidden">
       {/* Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-[#fdb813]/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-10 md:gap-12 pb-12 sm:pb-16 border-b border-gray-900/50">
           {/* Brand */}
@@ -79,6 +79,15 @@ export default function Footer() {
                   </Link>
                 </div>
               </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-[#fdb813] flex-shrink-0" />
+                <a
+                  href="tel:04712419991"
+                  className="hover:text-[#fdb813] transition-colors"
+                >
+                  Landline: 0471-2419991
+                </a>
+              </li>
             </ul>
           </motion.div>
 
@@ -140,7 +149,7 @@ export default function Footer() {
 
         <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-xs text-gray-500 font-bold tracking-widest uppercase gap-3 sm:gap-4 font-sans">
           <p>© {new Date().getFullYear()} New York Chicken. All Rights Reserved.</p>
-          <p className="text-[#fdb813]/60">Elevated Dining Experience</p>
+          <p className="text-[#fdb813]/60">Craving for more</p>
         </div>
       </div>
     </footer>

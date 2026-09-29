@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { MenuItem } from "../data/menuData";
 import { useMenuData } from "../context/MenuContext";
-import { Search, Flame, Leaf, Sparkles, Plus, Check, X, Info } from "lucide-react";
+import { Search, Flame, Leaf, Sparkles, Plus, Check, X, Info, Image as ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface MenuBrowserProps {
@@ -198,6 +198,20 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                       className="group relative flex flex-col justify-between bg-[#111111]/80 backdrop-blur-md p-6 sm:p-8 rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(253,184,19,0.1)] border border-gray-900 hover:border-[#fdb813]/40"
                     >
                       <div className="space-y-4">
+                        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-black">
+                          {item.image ? (
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#1a1a1a] to-[#0b0c0e] text-gray-600">
+                              <ImageIcon className="h-6 w-6" aria-hidden="true" />
+                              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Dish Photo</span>
+                            </div>
+                          )}
+                        </div>
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-center gap-2 mb-1">
                             {item.subcategory && (

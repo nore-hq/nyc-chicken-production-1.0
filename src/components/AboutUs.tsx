@@ -62,7 +62,7 @@ export default function AboutUs() {
             {/* Main Image Container */}
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
               <img
-                src="/store_exterior.jpeg"
+                src="/store_interior.jpg"
                 alt="New York Chicken Store"
                 className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out opacity-80"
               />

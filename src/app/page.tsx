@@ -11,12 +11,14 @@ import OrderDrawer, { CartItem } from "@/components/OrderDrawer";
 import StoreShowcase from "@/components/StoreShowcase";
 import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
+import FranchisePage from "@/components/FranchisePage";
 import { MenuItem } from "@/data/menuData";
 
 export default function Home() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false);
+  const [isFranchiseOpen, setIsFranchiseOpen] = useState<boolean>(false);
 
   const handleAddToCart = (
     item: MenuItem,
@@ -82,6 +84,7 @@ export default function Home() {
         <Navbar
           cartCount={cartCount}
           onOpenCart={() => setIsCartOpen(true)}
+          onOpenFranchise={() => setIsFranchiseOpen(true)}
           onOpenMenu={() => {
             setIsMenuExpanded(true);
             setTimeout(() => {
@@ -130,12 +133,12 @@ export default function Home() {
 
             {/* Social Proof / Instagram */}
           </div>
-
+          <BrochureViewer />
           <AboutUs />
 
           <InstagramReelsWidget />
           <StoreShowcase />
-          <BrochureViewer />
+
         </main>
 
         {/* Footer */}
@@ -148,6 +151,12 @@ export default function Home() {
           cartItems={cartItems}
           onUpdateQuantity={handleUpdateQuantity}
           onClearCart={handleClearCart}
+        />
+
+        {/* Franchise Page Overlay */}
+        <FranchisePage
+          isOpen={isFranchiseOpen}
+          onClose={() => setIsFranchiseOpen(false)}
         />
       </div>
     </div>

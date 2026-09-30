@@ -10,6 +10,7 @@ interface NavbarProps {
   cartCount: number;
   onOpenCart: () => void;
   onOpenMenu?: () => void;
+  onOpenFranchise?: () => void;
 }
 {/* { href: "#brochure", label: "Brochure" }, */ }
 const navLinks = [
@@ -18,7 +19,7 @@ const navLinks = [
   { href: "#location", label: "Location" },
 ];
 
-export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProps) {
+export default function Navbar({ cartCount, onOpenCart, onOpenMenu, onOpenFranchise }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -79,6 +80,18 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProp
                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#fdb813] group-hover:w-full transition-all duration-300 ease-out" />
               </Link>
             ))}
+            {/* Franchise nav link */}
+            <motion.button
+              onClick={onOpenFranchise}
+              whileHover={{ y: -3 }}
+              whileTap={{ y: 1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 12 }}
+              className="group relative text-base font-bold tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors"
+              style={{ fontFamily: "var(--font-cinzel), serif" }}
+            >
+              Franchise
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#fdb813] group-hover:w-full transition-all duration-300 ease-out" />
+            </motion.button>
           </nav>
 
           {/* Right Side Actions */}
@@ -183,6 +196,23 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu }: NavbarProp
                   </Link>
                 </motion.div>
               ))}
+              {/* Franchise link in mobile drawer */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.08, duration: 0.3 }}
+              >
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenFranchise?.();
+                  }}
+                  className="block py-3 text-lg font-bold tracking-[0.2em] uppercase text-white active:text-[#fdb813] active:scale-95 transition-all"
+                  style={{ fontFamily: "var(--font-cinzel), serif" }}
+                >
+                  Franchise
+                </button>
+              </motion.div>
               {/* Mobile Reserve/Order Buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}

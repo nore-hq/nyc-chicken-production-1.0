@@ -11,7 +11,7 @@ export default function StoreShowcase() {
       subtitle: "NYC Tower, Kazhakuttam",
     },
     {
-      src: "/store_interior.jpg",
+      src: "/store_exterior.jpeg",
       title: "Indoor Dining Lounge",
       subtitle: "Modern Ambiance",
     },
@@ -48,7 +48,6 @@ export default function StoreShowcase() {
             A refined space designed to elevate your dining experience.
           </p>
         </motion.div>
-
         {/* Image Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {images.map((img, idx) => (

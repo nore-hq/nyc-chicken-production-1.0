@@ -5,15 +5,16 @@ import { motion } from "framer-motion";
 
 export default function StoreShowcase() {
   const images = [
-    {
-      src: "/store_exterior.jpg",
-      title: "Store Exterior & Branding",
-      subtitle: "NYC Tower, Kazhakuttam",
-    },
+
     {
       src: "/store_exterior.jpeg",
       title: "Indoor Dining Lounge",
       subtitle: "Modern Ambiance",
+    },
+    {
+      src: "/store_interior.jpg",
+      title: "Cozy dining, vibrant vibes",
+      subtitle: "NYC Tower, Kazhakuttam",
     },
     {
       src: "/outdoor_dining.jpg",

@@ -36,7 +36,7 @@ export default function AboutUs() {
                   Internationally, New York Chicken started expansion in 2018 with a focus on the markets of Asia and started its first international outlet in Bahrain.
                 </p>
                 <p className="mt-3 text-sm text-gray-400">
-                  The master franchise rights are held by Pizza Development Company of Bahrain whom has given particular attention to the market of India given the mammoth size of the market and vast opportunities.
+                  The master franchise rights are held by New York Chicken, Bahrain.
                 </p>
               </div>
             </div>
@@ -62,7 +62,7 @@ export default function AboutUs() {
             {/* Main Image Container */}
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
               <img
-                src="/store_interior.jpg"
+                src="/aboutus.jpeg"
                 alt="New York Chicken Store"
                 className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out opacity-80"
               />

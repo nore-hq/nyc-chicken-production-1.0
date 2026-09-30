@@ -95,6 +95,103 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
           </p>
         </motion.div>
 
+        {/* ── Signature Dishes ── */}
+        {(() => {
+          const SIGNATURE_IDS = ["brg-f3", "fry-7", "ch-2", "rc-1"];
+          const SIGNATURE_LABELS: Record<string, string> = {
+            "brg-f3": "Brooklyn Double Burger",
+            "fry-7":  "Char Grilled Peri Peri Fries",
+            "ch-2":   "Fried Chicken Boneless",
+            "rc-1":   "Grilled Chicken Rice Bowl",
+          };
+          const signatureItems = SIGNATURE_IDS
+            .map((id) => MENU_ITEMS.find((m) => m.id === id))
+            .filter(Boolean) as MenuItem[];
+
+          if (signatureItems.length === 0) return null;
+
+          return (
+            <div className="mb-14">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="text-[#fdb813] text-[10px] font-black tracking-[0.35em] uppercase font-sans">
+                  ★ Signature Dishes
+                </span>
+                <div className="flex-1 h-px bg-gradient-to-r from-[#fdb813]/30 to-transparent" />
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                {signatureItems.map((item, idx) => {
+                  const isInCart = cartItemIds.includes(item.id);
+                  const hasMultiplePrices = item.prices && item.prices.length > 0;
+                  const displayName = SIGNATURE_LABELS[item.id] ?? item.name;
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: idx * 0.08 }}
+                      whileHover={{ y: -6, scale: 1.02 }}
+                      onClick={() => handleCardClick(item)}
+                      className="group relative bg-[#111111] rounded-2xl overflow-hidden border border-[#fdb813]/20 hover:border-[#fdb813] transition-all duration-400 shadow-[0_0_20px_rgba(253,184,19,0.08)] hover:shadow-[0_0_35px_rgba(253,184,19,0.25)] cursor-pointer"
+                    >
+                      {/* Image */}
+                      <div className="relative aspect-[4/3] w-full bg-[#0b0c0e] overflow-hidden">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={displayName}
+                            className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-[#1a1a1a] to-[#0b0c0e] text-gray-700">
+                            <ImageIcon className="h-7 w-7" aria-hidden="true" />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent opacity-80" />
+                        <span className="absolute top-2 left-2 text-[9px] font-black tracking-widest uppercase bg-[#fdb813] text-black px-2 py-0.5 rounded-full">
+                          Signature
+                        </span>
+                      </div>
+
+                      {/* Info */}
+                      <div className="p-4">
+                        <h3
+                          className="text-white text-sm sm:text-base leading-snug mb-1 line-clamp-2"
+                          style={{ fontFamily: "var(--font-playfair), serif" }}
+                        >
+                          {displayName}
+                        </h3>
+                        <div className="flex items-center justify-between mt-3">
+                          <span className="text-[#fdb813] text-sm font-bold tracking-wide font-sans">
+                            {hasMultiplePrices
+                              ? `From ₹${item.prices![0].price}`
+                              : `₹${item.price}`}
+                          </span>
+                          <motion.button
+                            whileHover={{ scale: 1.08 }}
+                            whileTap={{ scale: 0.92 }}
+                            onClick={(e) => { e.stopPropagation(); handleCardClick(item); }}
+                            className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest border px-3 py-1.5 rounded-full font-sans transition-colors ${
+                              isInCart
+                                ? "border-[#fdb813] text-[#fdb813] bg-[#fdb813]/10"
+                                : "border-gray-700 text-gray-400 hover:border-[#fdb813] hover:text-[#fdb813]"
+                            }`}
+                          >
+                            {isInCart ? (
+                              <><Check className="w-3 h-3" /><span>Added</span></>
+                            ) : (
+                              <><Plus className="w-3 h-3" /><span>{hasMultiplePrices ? "Select" : "Add"}</span></>
+                            )}
+                          </motion.button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Controls */}
         <div className="mb-12 border-b border-gray-900 pb-8 space-y-8 font-sans relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">

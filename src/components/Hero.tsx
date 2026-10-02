@@ -2,8 +2,13 @@
 
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import BillboardModal from "@/components/BillboardModal";
 
-export default function Hero() {
+interface HeroProps {
+  onClaimOffer?: () => void;
+}
+
+export default function Hero({ onClaimOffer }: HeroProps) {
   const scrollToMenu = () => {
     document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -42,6 +47,11 @@ export default function Hero() {
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-[#0b0c0e]" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+
+      {/* Deep bottom dark gradient overlay - raised higher to conceal Gemini / AI watermark */}
+      <div className="absolute bottom-0 left-0 right-0 h-64 sm:h-80 md:h-96 bg-gradient-to-t from-black via-black/95 via-30% to-transparent z-10 pointer-events-none" />
+      {/* Bottom right localized dark vignette for AI watermark corner */}
+      <div className="absolute bottom-0 right-0 w-80 sm:w-96 md:w-[420px] h-48 sm:h-60 bg-gradient-to-tl from-black via-black to-transparent z-10 pointer-events-none" />
 
       {/* Checkerboard bottom border */}
       <div className="absolute bottom-0 left-0 right-0 h-2 bg-checkerboard z-20 opacity-80" />
@@ -129,6 +139,9 @@ export default function Hero() {
           className="w-px h-8 sm:h-10 bg-gradient-to-b from-[#fdb813] to-transparent"
         />
       </motion.div>
+
+      {/* 90% Hero Promotional Billboard Banner */}
+      <BillboardModal onClaimOffer={onClaimOffer} />
     </section>
   );
 }

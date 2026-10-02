@@ -12,7 +12,6 @@ import StoreShowcase from "@/components/StoreShowcase";
 import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
 import FranchisePage from "@/components/FranchisePage";
-import BillboardModal from "@/components/BillboardModal";
 import { MenuItem } from "@/data/menuData";
 
 export default function Home() {
@@ -96,7 +95,14 @@ export default function Home() {
 
         {/* Main Landing Sections */}
         <main className="flex-grow">
-          <Hero />
+          <Hero
+            onClaimOffer={() => {
+              setIsMenuExpanded(true);
+              setTimeout(() => {
+                document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
+              }, 150);
+            }}
+          />
 
 
           {/* Menu Interaction Flow */}
@@ -158,16 +164,6 @@ export default function Home() {
         <FranchisePage
           isOpen={isFranchiseOpen}
           onClose={() => setIsFranchiseOpen(false)}
-        />
-
-        {/* Billboard / Promotional Offer Popup */}
-        <BillboardModal
-          onClaimOffer={() => {
-            setIsMenuExpanded(true);
-            setTimeout(() => {
-              document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
-            }, 150);
-          }}
         />
       </div>
     </div>

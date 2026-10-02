@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Plus, Search, Edit3, Trash2, X, Image as ImageIcon } from "lucide-react";
+import { LogOut, Plus, Search, Edit3, Trash2, X, Image as ImageIcon, UtensilsCrossed, Megaphone } from "lucide-react";
 import Image from "next/image";
 import { useMenuData } from "@/context/MenuContext";
-import { MenuItem } from "@/data/menuData";
+import { MenuItem, Billboard } from "@/data/menuData";
 import ImageUploader from "@/components/admin/ImageUploader";
+import BillboardManager from "@/components/admin/BillboardManager";
+import BillboardModal from "@/components/BillboardModal";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -15,6 +17,9 @@ export default function AdminDashboard() {
   const [user, setUser] = useState<{ name: string; username: string } | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+  const [activeTab, setActiveTab] = useState<"menu" | "billboard">("menu");
+  const [previewBillboard, setPreviewBillboard] = useState<Billboard | null>(null);
+
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -142,120 +147,158 @@ export default function AdminDashboard() {
           </div>
         </div>
       </header>
-
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-8">
-          <div className="bg-[#111111] border border-white/5 p-4 rounded-2xl">
-            <p className="text-gray-500 text-sm mb-1">Total Items</p>
-            <p className="text-3xl font-bold">{items.length}</p>
-          </div>
-          <div className="bg-[#111111] border border-white/5 p-4 rounded-2xl">
-            <p className="text-gray-500 text-sm mb-1">Categories</p>
-            <p className="text-3xl font-bold text-[#fdb813]">{categories.length}</p>
-          </div>
+        {/* Navigation Tabs */}
+        <div className="flex items-center gap-3 mb-8 border-b border-white/10 pb-4">
+          <button
+            onClick={() => setActiveTab("menu")}
+            className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
+              activeTab === "menu"
+                ? "bg-[#fdb813] text-black shadow-lg shadow-[#fdb813]/20"
+                : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <UtensilsCrossed className="w-4 h-4" />
+            <span>Menu Items</span>
+            <span className={`text-xs px-2 py-0.5 rounded-full ${activeTab === "menu" ? "bg-black/20 text-black" : "bg-white/10 text-gray-300"}`}>
+              {items.length}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("billboard")}
+            className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-bold text-sm transition-all relative ${
+              activeTab === "billboard"
+                ? "bg-[#fdb813] text-black shadow-lg shadow-[#fdb813]/20"
+                : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <Megaphone className="w-4 h-4" />
+            <span>Billboard Section</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase font-black tracking-wider">
+              Ad Cards
+            </span>
+          </button>
         </div>
 
-        {/* Toolbar */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6 justify-between items-start md:items-center">
-          <div className="flex gap-2 bg-[#111111] p-1 rounded-xl border border-white/5 overflow-x-auto max-w-full">
-            <button
-              onClick={() => setActiveCategory("all")}
-              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors ${activeCategory === "all" ? "bg-[#fdb813] text-black font-bold" : "text-gray-400 hover:text-white"}`}
-            >
-              All Items
-            </button>
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors ${activeCategory === cat.id ? "bg-[#fdb813] text-black font-bold" : "text-gray-400 hover:text-white"}`}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex gap-3 w-full md:w-auto">
-            <div className="relative flex-1 md:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Search menu..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                className="w-full bg-[#111111] border border-white/5 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-[#fdb813]/50"
-              />
+        {activeTab === "billboard" ? (
+          <BillboardManager onPreviewPopup={(bb) => setPreviewBillboard(bb)} />
+        ) : (
+          <>
+            {/* Stats Row */}
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-8">
+              <div className="bg-[#111111] border border-white/5 p-4 rounded-2xl">
+                <p className="text-gray-500 text-sm mb-1">Total Items</p>
+                <p className="text-3xl font-bold">{items.length}</p>
+              </div>
+              <div className="bg-[#111111] border border-white/5 p-4 rounded-2xl">
+                <p className="text-gray-500 text-sm mb-1">Categories</p>
+                <p className="text-3xl font-bold text-[#fdb813]">{categories.length}</p>
+              </div>
             </div>
-            <button onClick={openAddModal} className="bg-[#fdb813] text-black px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-[#e5a00d] transition-colors whitespace-nowrap">
-              <Plus className="w-4 h-4" /> Add Item
-            </button>
-          </div>
-        </div>
 
-        {/* Table / List */}
-        <div className="bg-[#111111] border border-white/5 rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/5 text-xs uppercase tracking-wider text-gray-500">
-                  <th className="p-4 font-medium">Item</th>
-                  <th className="p-4 font-medium">Category</th>
-                  <th className="p-4 font-medium w-32">Price (₹)</th>
-                  <th className="p-4 font-medium text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                {filteredItems.map(item => (
-                  <tr key={item.id} className="hover:bg-white/[0.02] transition-colors group">
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        {item.image ? (
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-12 h-12 rounded-xl object-cover bg-black/60 border border-white/10 flex-shrink-0"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-gray-500">
-                            <ImageIcon className="w-5 h-5 text-gray-600" />
-                          </div>
-                        )}
-                        <div>
-                          <div className="font-medium text-white">{item.name}</div>
-                          {item.description && <div className="text-xs text-gray-500 mt-1 line-clamp-1">{item.description}</div>}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm text-gray-400">
-                      {categories.find(c => c.id === item.category)?.name || item.category}
-                    </td>
-                    <td className="p-4 text-white font-medium">
-                      ₹{item.price}
-                    </td>
-                    <td className="p-4 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => openEditModal(item)} className="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-400 hover:text-white" title="Edit Item">
-                          <Edit3 className="w-4 h-4" />
-                        </button>
-                        <button onClick={() => handleDelete(item.id)} className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-gray-400 hover:text-red-500" title="Delete Item">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+            {/* Toolbar */}
+            <div className="flex flex-col md:flex-row gap-4 mb-6 justify-between items-start md:items-center">
+              <div className="flex gap-2 bg-[#111111] p-1 rounded-xl border border-white/5 overflow-x-auto max-w-full">
+                <button
+                  onClick={() => setActiveCategory("all")}
+                  className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors ${activeCategory === "all" ? "bg-[#fdb813] text-black font-bold" : "text-gray-400 hover:text-white"}`}
+                >
+                  All Items
+                </button>
+                {categories.map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors ${activeCategory === cat.id ? "bg-[#fdb813] text-black font-bold" : "text-gray-400 hover:text-white"}`}
+                  >
+                    {cat.name}
+                  </button>
                 ))}
-                {filteredItems.length === 0 && (
-                  <tr>
-                    <td colSpan={4} className="p-8 text-center text-gray-500">
-                      No items found.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              </div>
+
+              <div className="flex gap-3 w-full md:w-auto">
+                <div className="relative flex-1 md:w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                  <input
+                    type="text"
+                    placeholder="Search menu..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    className="w-full bg-[#111111] border border-white/5 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-[#fdb813]/50"
+                  />
+                </div>
+                <button onClick={openAddModal} className="bg-[#fdb813] text-black px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-[#e5a00d] transition-colors whitespace-nowrap">
+                  <Plus className="w-4 h-4" /> Add Item
+                </button>
+              </div>
+            </div>
+
+            {/* Table / List */}
+            <div className="bg-[#111111] border border-white/5 rounded-2xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/5 text-xs uppercase tracking-wider text-gray-500">
+                      <th className="p-4 font-medium">Item</th>
+                      <th className="p-4 font-medium">Category</th>
+                      <th className="p-4 font-medium w-32">Price (₹)</th>
+                      <th className="p-4 font-medium text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {filteredItems.map(item => (
+                      <tr key={item.id} className="hover:bg-white/[0.02] transition-colors group">
+                        <td className="p-4">
+                          <div className="flex items-center gap-3">
+                            {item.image ? (
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-12 h-12 rounded-xl object-cover bg-black/60 border border-white/10 flex-shrink-0"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-gray-500">
+                                <ImageIcon className="w-5 h-5 text-gray-600" />
+                              </div>
+                            )}
+                            <div>
+                              <div className="font-medium text-white">{item.name}</div>
+                              {item.description && <div className="text-xs text-gray-500 mt-1 line-clamp-1">{item.description}</div>}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-4 text-sm text-gray-400">
+                          {categories.find(c => c.id === item.category)?.name || item.category}
+                        </td>
+                        <td className="p-4 text-white font-medium">
+                          ₹{item.price}
+                        </td>
+                        <td className="p-4 text-right">
+                          <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                            <button onClick={() => openEditModal(item)} className="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-400 hover:text-white" title="Edit Item">
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => handleDelete(item.id)} className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-gray-400 hover:text-red-500" title="Delete Item">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {filteredItems.length === 0 && (
+                      <tr>
+                        <td colSpan={4} className="p-8 text-center text-gray-500">
+                          No items found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        )}
       </main>
 
       {/* Add/Edit Modal */}
@@ -348,6 +391,14 @@ export default function AdminDashboard() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Live Preview of Billboard Popup */}
+      {previewBillboard && (
+        <BillboardModal
+          previewBillboard={previewBillboard}
+          onClosePreview={() => setPreviewBillboard(null)}
+        />
       )}
     </div>
   );

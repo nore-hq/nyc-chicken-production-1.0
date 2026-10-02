@@ -38,3 +38,16 @@ export interface DBMenuItem {
   created_at: string;
   updated_at: string;
 }
+
+export interface DBBillboard {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  image_url: string;
+  link_url: string | null;
+  cta_text: string | null;
+  is_active: number;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}

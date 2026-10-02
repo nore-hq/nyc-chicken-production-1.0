@@ -23,6 +23,17 @@ export interface MenuCategory {
   badge?: string;
 }
 
+export interface Billboard {
+  id: string;
+  title: string;
+  subtitle?: string;
+  image_url: string;
+  link_url?: string;
+  cta_text?: string;
+  is_active: boolean;
+  display_order: number;
+}
+
 export const MENU_CATEGORIES: MenuCategory[] = [
   { id: "all", name: "Full Menu", icon: "Utensils" },
   { id: "starters", name: "Starters & Fries", icon: "Popcorn" },

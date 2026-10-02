@@ -12,6 +12,7 @@ import StoreShowcase from "@/components/StoreShowcase";
 import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
 import FranchisePage from "@/components/FranchisePage";
+import BillboardModal from "@/components/BillboardModal";
 import { MenuItem } from "@/data/menuData";
 
 export default function Home() {
@@ -158,7 +159,18 @@ export default function Home() {
           isOpen={isFranchiseOpen}
           onClose={() => setIsFranchiseOpen(false)}
         />
+
+        {/* Billboard / Promotional Offer Popup */}
+        <BillboardModal
+          onClaimOffer={() => {
+            setIsMenuExpanded(true);
+            setTimeout(() => {
+              document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
+            }, 150);
+          }}
+        />
       </div>
     </div>
   );
 }
+

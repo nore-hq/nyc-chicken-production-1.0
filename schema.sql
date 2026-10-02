@@ -37,5 +37,19 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS billboards (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  subtitle TEXT,
+  image_url TEXT NOT NULL,
+  link_url TEXT,
+  cta_text TEXT DEFAULT 'Claim Offer',
+  is_active INTEGER DEFAULT 1,
+  display_order INTEGER DEFAULT 0,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT OR REPLACE INTO admin_users (id, username, password_hash, salt, name)
 VALUES ('admin_1', 'nycadmin@nyc.com', '20e7df12fabce1cdfa43d2069dde39c03cd564c0c0f0e4a3b07b2f425820b657', 'ab2587a7a9c924c56420f67f4e625797', 'Restaurant Manager');
+

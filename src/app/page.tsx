@@ -12,6 +12,7 @@ import StoreShowcase from "@/components/StoreShowcase";
 import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
 import FranchisePage from "@/components/FranchisePage";
+import OffersSection from "@/components/OffersSection";
 import { MenuItem } from "@/data/menuData";
 
 export default function Home() {
@@ -104,6 +105,15 @@ export default function Home() {
             }}
           />
 
+          {/* Offers Bento Section */}
+          <OffersSection
+            onClaimOffer={() => {
+              setIsMenuExpanded(true);
+              setTimeout(() => {
+                document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
+              }, 150);
+            }}
+          />
 
           {/* Menu Interaction Flow */}
           <div id="menu">

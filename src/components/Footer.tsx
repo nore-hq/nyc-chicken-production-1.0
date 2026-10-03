@@ -149,7 +149,7 @@ export default function Footer() {
 
         <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-xs text-gray-500 font-bold tracking-widest uppercase gap-3 sm:gap-4 font-sans">
           <p>© {new Date().getFullYear()} New York Chicken. All Rights Reserved.</p>
-          <p className="text-[#fdb813]/60">Craving for more</p>
+          <p className="text-[#fdb813]/60">Crave for more!</p>
         </div>
       </div>
     </footer>

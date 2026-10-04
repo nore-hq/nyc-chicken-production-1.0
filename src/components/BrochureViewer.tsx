@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function BrochureViewer() {
   const [isOpen, setIsOpen] = useState(false);
-  const totalPages = 14;
+  const totalPages = 20;
 
   return (
     <section id="brochure" className="py-20 md:py-24 bg-black/40 backdrop-blur-sm relative overflow-hidden border-t border-[#fdb813]/10">
@@ -86,7 +86,7 @@ export default function BrochureViewer() {
                           className="overflow-hidden rounded-xl border border-white/10 bg-white shadow-lg sm:rounded-2xl"
                         >
                           <Image
-                            src={`/brochure/page_${page}.png`}
+                            src={`/brochure/page_${page}.jpeg`}
                             alt={`NYC Menu brochure page ${page}`}
                             width={1241}
                             height={1754}

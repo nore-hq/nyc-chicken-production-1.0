@@ -25,6 +25,9 @@ const cinzel = Cinzel({
 export const metadata: Metadata = {
   title: "New York Chicken | NYC Kazhakuttam",
   description: "The Taste of New York City. Premium fine dining and authentic flavors.",
+  icons: {
+    icon: "/nyc_logo_latest.png?v=20261005",
+  },
 };
 
 export const viewport = {

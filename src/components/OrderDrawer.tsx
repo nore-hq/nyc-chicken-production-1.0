@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { MenuItem } from "../data/menuData";
+import { Billboard, MenuItem } from "../data/menuData";
 import { X, Trash2, Plus, Minus, Send, Phone, ShoppingBag, Info } from "lucide-react";
 
 export interface CartItem {
   item: MenuItem;
   selectedSize?: { label: string; price: number };
   quantity: number;
+  offerId?: string;
 }
 
 interface OrderDrawerProps {
@@ -16,6 +17,7 @@ interface OrderDrawerProps {
   cartItems: CartItem[];
   onUpdateQuantity: (index: number, newQty: number) => void;
   onClearCart: () => void;
+  offer?: Billboard | null;
 }
 
 export default function OrderDrawer({
@@ -24,6 +26,7 @@ export default function OrderDrawer({
   cartItems,
   onUpdateQuantity,
   onClearCart,
+  offer,
 }: OrderDrawerProps) {
   const [orderType, setOrderType] = useState<"Delivery" | "Takeaway" | "Dine-In">("Delivery");
   const [customerName, setCustomerName] = useState("");
@@ -35,6 +38,16 @@ export default function OrderDrawer({
     const itemPrice = curr.selectedSize ? curr.selectedSize.price : curr.item.price;
     return acc + itemPrice * curr.quantity;
   }, 0);
+  const offerDiscountPercent = offer?.discount_percent ?? 0;
+  const offerItemsSubtotal = offer
+    ? cartItems.reduce((acc, curr) => {
+        if (curr.offerId !== offer.id) return acc;
+        const itemPrice = curr.selectedSize ? curr.selectedSize.price : curr.item.price;
+        return acc + itemPrice * curr.quantity;
+      }, 0)
+    : 0;
+  const discountAmount = Math.round(offerItemsSubtotal * offerDiscountPercent / 100);
+  const totalAfterDiscount = subtotal - discountAmount;
 
   const handleSendWhatsApp = () => {
     if (cartItems.length === 0) return;
@@ -49,7 +62,15 @@ export default function OrderDrawer({
     });
 
     message += `-----------------------------------\n`;
-    message += `*Total Amount:* ₹${subtotal} (+ GST as applicable)\n`;
+    message += `*Subtotal:* ₹${subtotal}\n`;
+    if (offer) {
+      message += `*Offer:* ${offer.title}\n`;
+      if (offer.subtitle) message += `*Offer Details:* ${offer.subtitle}\n`;
+      if (offerDiscountPercent > 0) {
+        message += `*Offer Discount (${offerDiscountPercent}%):* -₹${discountAmount}\n`;
+      }
+    }
+    message += `*Total Amount:* ₹${totalAfterDiscount} (+ GST as applicable)\n`;
     message += `*Order Type:* ${orderType}\n`;
     if (customerName) message += `*Name:* ${customerName}\n`;
     if (customerPhone) message += `*Phone:* ${customerPhone}\n`;
@@ -91,6 +112,16 @@ export default function OrderDrawer({
 
           {/* Cart Content / Items List */}
           <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-[#111111]">
+            {offer && (
+              <div className="rounded-xl border border-[#fdb813]/30 bg-[#fdb813]/10 p-4">
+                <p className="text-xs font-black uppercase tracking-widest text-[#fdb813]">
+                  Offer applied: {offer.title}
+                </p>
+                {offer.subtitle && (
+                  <p className="mt-1 text-sm text-gray-300">{offer.subtitle}</p>
+                )}
+              </div>
+            )}
             
             {cartItems.length === 0 ? (
               <div className="text-center py-20">
@@ -119,7 +150,7 @@ export default function OrderDrawer({
                     const price = ci.selectedSize ? ci.selectedSize.price : ci.item.price;
                     return (
                       <div
-                        key={`${ci.item.id}-${ci.selectedSize?.label || "default"}`}
+                        key={`${ci.item.id}-${ci.selectedSize?.label || "default"}-${ci.offerId || "regular"}-${index}`}
                         className="py-4 border-b border-gray-800 flex items-center justify-between gap-4"
                       >
                         <div className="space-y-1 flex-1 min-w-0">
@@ -225,8 +256,26 @@ export default function OrderDrawer({
           {cartItems.length > 0 && (
             <div className="p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] border-t border-gray-800 bg-[#0b0c0e] space-y-4">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Subtotal</span>
-                <span className="text-2xl font-black text-white">₹{subtotal}</span>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-6">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Subtotal</span>
+                    <span className="text-sm font-bold text-white">₹{subtotal}</span>
+                  </div>
+                  {discountAmount > 0 && (
+                    <div className="flex items-center justify-between gap-6">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+                        Offer discount ({offerDiscountPercent}%)
+                      </span>
+                      <span className="text-sm font-bold text-emerald-400">−₹{discountAmount}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between gap-6">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-300">
+                      Total (+ GST as applicable)
+                    </span>
+                    <span className="text-2xl font-black text-white">₹{totalAfterDiscount}</span>
+                  </div>
+                </div>
               </div>
 
               <button

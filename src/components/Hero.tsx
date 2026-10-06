@@ -3,9 +3,10 @@
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import BillboardModal from "@/components/BillboardModal";
+import { Billboard } from "@/data/menuData";
 
 interface HeroProps {
-  onClaimOffer?: () => void;
+  onClaimOffer?: (billboard: Billboard) => void;
 }
 
 export default function Hero({ onClaimOffer }: HeroProps) {

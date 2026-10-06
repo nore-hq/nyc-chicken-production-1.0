@@ -6,7 +6,7 @@ import { Sparkles, ArrowRight, Flame, Tag, ChevronRight } from "lucide-react";
 import { Billboard } from "@/data/menuData";
 
 interface OffersSectionProps {
-  onClaimOffer?: () => void;
+  onClaimOffer?: (billboard: Billboard) => void;
 }
 
 // Bento layout patterns — cycles through for visual variety
@@ -183,7 +183,7 @@ export default function OffersSection({ onClaimOffer }: OffersSectionProps) {
 
   const handleClaim = (billboard: Billboard) => {
     if (onClaimOffer) {
-      onClaimOffer();
+      onClaimOffer(billboard);
     } else if (billboard.link_url) {
       if (billboard.link_url.startsWith("#")) {
         document.querySelector(billboard.link_url)?.scrollIntoView({ behavior: "smooth" });

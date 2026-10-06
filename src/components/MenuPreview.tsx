@@ -37,7 +37,7 @@ const SIGNATURE_DISHES = [
   },
   {
     id: "sig-4",
-    name: "Grilled Chicken Rice Bowl",
+    name: "Fried Chicken Rice Bowl",
     description:
       "Rice cooked with pure ghee, mixed fresh vegetables, NYC spice mix & topped with grilled chicken steak",
     price: 249,

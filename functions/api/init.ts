@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS billboards (
   title TEXT NOT NULL,
   subtitle TEXT,
   image_url TEXT NOT NULL,
+  item_ids_json TEXT,
+  discount_percent REAL DEFAULT 0,
   link_url TEXT,
   cta_text TEXT DEFAULT 'Claim Offer',
   is_active INTEGER DEFAULT 1,

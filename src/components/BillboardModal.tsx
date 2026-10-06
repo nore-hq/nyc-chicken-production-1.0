@@ -10,7 +10,7 @@ interface BillboardModalProps {
   // Optional override for admin live preview
   previewBillboard?: Billboard | null;
   onClosePreview?: () => void;
-  onClaimOffer?: () => void;
+  onClaimOffer?: (billboard: Billboard) => void;
   isHeroOverlay?: boolean;
 }
 
@@ -113,7 +113,7 @@ export default function BillboardModal({
   const handleActionClick = (current: Billboard) => {
     handleClose();
     if (onClaimOffer) {
-      onClaimOffer();
+      onClaimOffer(current);
     } else if (current.link_url) {
       if (current.link_url.startsWith("#")) {
         const targetElement = document.querySelector(current.link_url);

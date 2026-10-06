@@ -28,6 +28,8 @@ export interface Billboard {
   title: string;
   subtitle?: string;
   image_url: string;
+  item_ids?: string[];
+  discount_percent?: number;
   link_url?: string;
   cta_text?: string;
   is_active: boolean;

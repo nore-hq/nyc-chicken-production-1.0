@@ -1,21 +1,25 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Trash2, Edit3, Eye, EyeOff, Sparkles, ExternalLink, Image as ImageIcon, X } from "lucide-react";
+import { Plus, Trash2, Edit3, Eye, EyeOff, Sparkles, ExternalLink, Image as ImageIcon, X, Search, ChevronDown } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
 import { Billboard } from "@/data/menuData";
+import { useMenuData } from "@/context/MenuContext";
 
 interface BillboardManagerProps {
   onPreviewPopup?: (billboard: Billboard) => void;
 }
 
 export default function BillboardManager({ onPreviewPopup }: BillboardManagerProps) {
+  const { items: menuItems } = useMenuData();
   const [billboards, setBillboards] = useState<Billboard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBillboard, setEditingBillboard] = useState<Partial<Billboard> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [menuItemSearch, setMenuItemSearch] = useState("");
+  const [isDishPickerOpen, setIsDishPickerOpen] = useState(false);
 
   const fetchBillboards = async () => {
     setIsLoading(true);
@@ -45,13 +49,18 @@ export default function BillboardManager({ onPreviewPopup }: BillboardManagerPro
       cta_text: "Claim Offer",
       is_active: true,
       display_order: billboards.length,
+      item_ids: [],
     });
+    setMenuItemSearch("");
+    setIsDishPickerOpen(false);
     setErrorMessage(null);
     setIsModalOpen(true);
   };
 
   const openEditModal = (bb: Billboard) => {
-    setEditingBillboard({ ...bb });
+    setEditingBillboard({ ...bb, item_ids: bb.item_ids || [] });
+    setMenuItemSearch("");
+    setIsDishPickerOpen(false);
     setErrorMessage(null);
     setIsModalOpen(true);
   };
@@ -102,6 +111,15 @@ export default function BillboardManager({ onPreviewPopup }: BillboardManagerPro
       setErrorMessage("Please provide a title for the billboard.");
       return;
     }
+    if (!editingBillboard.item_ids?.length) {
+      setErrorMessage("Please add at least one menu dish to this offer.");
+      return;
+    }
+    const discountPercent = editingBillboard.discount_percent ?? 0;
+    if (!Number.isFinite(discountPercent) || discountPercent < 0 || discountPercent > 100) {
+      setErrorMessage("Discount must be between 0 and 100 percent.");
+      return;
+    }
 
     setIsSaving(true);
     setErrorMessage(null);
@@ -130,14 +148,24 @@ export default function BillboardManager({ onPreviewPopup }: BillboardManagerPro
         const data = await res.json();
         setErrorMessage(data.error || "Failed to save billboard.");
       }
-    } catch (err: any) {
-      setErrorMessage(err.message || "Failed to save billboard.");
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to save billboard.");
     } finally {
       setIsSaving(false);
     }
   };
 
   const activeCount = billboards.filter(b => b.is_active).length;
+  const filteredMenuItems = menuItems.filter(item =>
+    item.isAvailable !== false &&
+    item.name.toLowerCase().includes(menuItemSearch.trim().toLowerCase())
+  );
+  const addMappedDish = (itemId: string) => {
+    setEditingBillboard(prev => ({
+      ...prev,
+      item_ids: [...new Set([...(prev?.item_ids || []), itemId])],
+    }));
+  };
 
   return (
     <div className="space-y-6">
@@ -373,6 +401,127 @@ export default function BillboardManager({ onPreviewPopup }: BillboardManagerPro
                   placeholder="e.g. Valid on all Chicken Buckets & Burgers. Use code NYCWINGS"
                   className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#fdb813]"
                 />
+              </div>
+
+              {/* Offer dishes */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-300 mb-1">
+                  Dishes included in this offer
+                </label>
+                <p className="text-xs text-gray-500 mb-3">
+                  Customers selecting this offer will see these dishes in their order tray.
+                </p>
+                <div className="relative">
+                  <button
+                    type="button"
+                    aria-expanded={isDishPickerOpen}
+                    onClick={() => setIsDishPickerOpen(open => !open)}
+                    className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-black/50 px-4 py-3 text-left text-sm text-gray-300 hover:border-[#fdb813]/60 focus:outline-none focus:border-[#fdb813]"
+                  >
+                    <span>
+                      {(editingBillboard?.item_ids || []).length > 0
+                        ? `${editingBillboard?.item_ids?.length} dish${editingBillboard?.item_ids?.length === 1 ? "" : "es"} selected — add more`
+                        : "Choose dishes"}
+                    </span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${isDishPickerOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {isDishPickerOpen && (
+                    <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-[#111111] shadow-2xl">
+                      <div className="relative border-b border-white/10 p-2">
+                        <Search className="absolute left-5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                        <input
+                          autoFocus
+                          type="search"
+                          value={menuItemSearch}
+                          onChange={e => setMenuItemSearch(e.target.value)}
+                          placeholder="Search menu dishes..."
+                          className="w-full rounded-lg border border-white/10 bg-black/60 py-2.5 pl-9 pr-3 text-sm text-white focus:outline-none focus:border-[#fdb813]"
+                        />
+                      </div>
+                      <div className="max-h-52 overflow-y-auto p-1">
+                        {filteredMenuItems
+                          .filter(item => !(editingBillboard?.item_ids || []).includes(item.id))
+                          .map(item => (
+                            <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => addMappedDish(item.id)}
+                              className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm text-gray-200 hover:bg-[#fdb813]/10 hover:text-[#fdb813]"
+                            >
+                              <span>{item.name}</span>
+                              <Plus className="h-4 w-4 shrink-0" />
+                            </button>
+                          ))}
+                        {filteredMenuItems.filter(item => !(editingBillboard?.item_ids || []).includes(item.id)).length === 0 && (
+                          <p className="px-3 py-4 text-center text-xs text-gray-500">
+                            No matching dishes available.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {(editingBillboard?.item_ids || []).length > 0 ? (
+                  <ul className="mt-3 space-y-2">
+                    {(editingBillboard?.item_ids || []).map(itemId => {
+                      const item = menuItems.find(menuItem => menuItem.id === itemId);
+                      return (
+                        <li
+                          key={itemId}
+                          className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-200"
+                        >
+                          <span>{item?.name || `Unavailable menu item (${itemId})`}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setEditingBillboard(prev => ({
+                                ...prev,
+                                item_ids: (prev?.item_ids || []).filter(id => id !== itemId),
+                              }))
+                            }
+                            aria-label={`Remove ${item?.name || "dish"} from offer`}
+                            className="text-gray-400 hover:text-red-400"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-amber-300">
+                    Add at least one dish so this offer can be ordered directly.
+                  </p>
+                )}
+              </div>
+
+              {/* Optional offer discount */}
+              <div>
+                <label htmlFor="offer-discount-percent" className="block text-sm font-semibold text-gray-300 mb-1">
+                  Offer discount <span className="font-normal text-gray-500">(optional)</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="offer-discount-percent"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    value={editingBillboard?.discount_percent ?? ""}
+                    onChange={e =>
+                      setEditingBillboard(prev => ({
+                        ...prev,
+                        discount_percent: e.target.value === "" ? undefined : Number(e.target.value),
+                      }))
+                    }
+                    placeholder="0"
+                    className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-2.5 pr-12 text-white focus:outline-none focus:border-[#fdb813]"
+                  />
+                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">%</span>
+                </div>
+                <p className="mt-1 text-xs text-gray-500">
+                  The percentage is taken off the combined price of the dishes in this offer.
+                </p>
               </div>
 
               {/* Action Link & CTA Button Text */}

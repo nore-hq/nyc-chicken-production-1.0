@@ -44,6 +44,8 @@ export interface DBBillboard {
   title: string;
   subtitle: string | null;
   image_url: string;
+  item_ids_json: string | null;
+  discount_percent: number;
   link_url: string | null;
   cta_text: string | null;
   is_active: number;

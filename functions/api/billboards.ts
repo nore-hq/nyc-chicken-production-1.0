@@ -1,26 +1,11 @@
 import { Env, DBBillboard } from "./types";
-
-const CREATE_TABLE_SQL = `
-CREATE TABLE IF NOT EXISTS billboards (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  subtitle TEXT,
-  image_url TEXT NOT NULL,
-  link_url TEXT,
-  cta_text TEXT DEFAULT 'Claim Offer',
-  is_active INTEGER DEFAULT 1,
-  display_order INTEGER DEFAULT 0,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-);
-`;
+import { ensureBillboardsSchema } from "./billboards-schema";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { env } = context;
 
   try {
-    // Ensure table exists safely without touching existing data
-    await env.DB.prepare(CREATE_TABLE_SQL).run();
+    await ensureBillboardsSchema(env.DB);
 
     const result = await env.DB.prepare(
       "SELECT * FROM billboards WHERE is_active = 1 ORDER BY display_order ASC, created_at DESC"
@@ -29,6 +14,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const billboards = (result.results || []).map((b) => ({
       ...b,
       is_active: b.is_active === 1,
+      item_ids: b.item_ids_json ? JSON.parse(b.item_ids_json) : [],
     }));
 
     return new Response(JSON.stringify({ billboards }), {

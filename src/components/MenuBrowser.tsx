@@ -102,7 +102,7 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
             "brg-f3": "Brooklyn Double Burger",
             "fry-7":  "Char Grilled Peri Peri Fries",
             "ch-2":   "Fried Chicken Boneless",
-            "rc-1":   "Grilled Chicken Rice Bowl",
+            "rc-1":   "Fried Chicken Rice Bowl",
           };
           const signatureItems = SIGNATURE_IDS
             .map((id) => MENU_ITEMS.find((m) => m.id === id))

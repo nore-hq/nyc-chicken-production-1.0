@@ -13,10 +13,13 @@ import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
 import FranchisePage from "@/components/FranchisePage";
 import OffersSection from "@/components/OffersSection";
-import { MenuItem } from "@/data/menuData";
+import { Billboard, MenuItem } from "@/data/menuData";
+import { useMenuData } from "@/context/MenuContext";
 
 export default function Home() {
+  const { items: menuItems } = useMenuData();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [activeOffer, setActiveOffer] = useState<Billboard | null>(null);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false);
   const [isFranchiseOpen, setIsFranchiseOpen] = useState<boolean>(false);
@@ -28,6 +31,7 @@ export default function Home() {
     setCartItems((prev) => {
       const existingIdx = prev.findIndex(
         (ci) =>
+          !ci.offerId &&
           ci.item.id === item.id &&
           ci.selectedSize?.label === selectedSize?.label
       );
@@ -41,6 +45,27 @@ export default function Home() {
       }
     });
 
+    setIsCartOpen(true);
+  };
+
+  const handleOfferOrder = (offer: Billboard) => {
+    const offerItems = (offer.item_ids || [])
+      .map(itemId => menuItems.find(item => item.id === itemId))
+      .filter((item): item is MenuItem => !!item && item.isAvailable !== false);
+
+    if (offerItems.length === 0) {
+      setIsMenuExpanded(true);
+      setTimeout(() => {
+        document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
+      }, 150);
+      return;
+    }
+
+    setActiveOffer(offer);
+    setCartItems(prev => [
+      ...prev.filter(cartItem => !cartItem.offerId),
+      ...offerItems.map(item => ({ item, quantity: 1, offerId: offer.id })),
+    ]);
     setIsCartOpen(true);
   };
 
@@ -58,6 +83,7 @@ export default function Home() {
 
   const handleClearCart = () => {
     setCartItems([]);
+    setActiveOffer(null);
   };
 
   const cartCount = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
@@ -96,23 +122,13 @@ export default function Home() {
 
         {/* Main Landing Sections */}
         <main className="flex-grow">
-          <Hero
-            onClaimOffer={() => {
-              setIsMenuExpanded(true);
-              setTimeout(() => {
-                document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
-              }, 150);
-            }}
-          />
-
           {/* Offers Bento Section */}
           <OffersSection
-            onClaimOffer={() => {
-              setIsMenuExpanded(true);
-              setTimeout(() => {
-                document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
-              }, 150);
-            }}
+            onClaimOffer={handleOfferOrder}
+          />
+
+          <Hero
+            onClaimOffer={handleOfferOrder}
           />
 
           {/* Menu Interaction Flow */}
@@ -168,6 +184,7 @@ export default function Home() {
           cartItems={cartItems}
           onUpdateQuantity={handleUpdateQuantity}
           onClearCart={handleClearCart}
+          offer={activeOffer}
         />
 
         {/* Franchise Page Overlay */}
@@ -179,4 +196,3 @@ export default function Home() {
     </div>
   );
 }
-

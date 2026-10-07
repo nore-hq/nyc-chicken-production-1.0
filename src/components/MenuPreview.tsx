@@ -17,7 +17,7 @@ const SIGNATURE_DISHES = [
     description:
       "Double portion of crispy chicken breast topped with fresh lettuce, tomato, NYC signature sauce & cheese slice",
     price: 299,
-    video: "/videos/burger-video.mp4",
+    video: "/videos/Brooklyn-Double-Burger.mp4",
   },
   {
     id: "sig-2",
@@ -25,7 +25,7 @@ const SIGNATURE_DISHES = [
     description:
       "Peri Peri loaded fries topped generously with spicy char-grilled chicken pieces",
     price: 299,
-    video: "/videos/chicken-video.mp4",
+    video: "/videos/CharGrilledPeri%20Peri%20Fries.mp4",
   },
   {
     id: "sig-3",
@@ -33,7 +33,7 @@ const SIGNATURE_DISHES = [
     description:
       "Manhattan style signature boneless crispy fried chicken strips, perfectly seasoned",
     price: 189,
-    video: "/videos/hero-video.mp4",
+    video: "/videos/Fried-Chicken%20Boneless.mp4",
   },
   {
     id: "sig-4",

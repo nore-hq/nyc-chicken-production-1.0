@@ -2,14 +2,15 @@
 
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
-import BillboardModal from "@/components/BillboardModal";
 import { Billboard } from "@/data/menuData";
 
 interface HeroProps {
   onClaimOffer?: (billboard: Billboard) => void;
 }
 
-export default function Hero({ onClaimOffer }: HeroProps) {
+export default function Hero(_props: HeroProps) {
+  void _props;
+
   const scrollToMenu = () => {
     document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -142,7 +143,7 @@ export default function Hero({ onClaimOffer }: HeroProps) {
       </motion.div>
 
       {/* 90% Hero Promotional Billboard Banner */}
-      <BillboardModal onClaimOffer={onClaimOffer} />
+      {/* <BillboardModal onClaimOffer={_props.onClaimOffer} /> */}
     </section>
   );
 }

@@ -21,9 +21,30 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose, targetD
   const [spicyOnly, setSpicyOnly] = useState<boolean>(false);
   const [grilledOnly, setGrilledOnly] = useState<boolean>(false);
   const [highlightedItemId, setHighlightedItemId] = useState<string | null>(null);
+  const [offerItemIds, setOfferItemIds] = useState<string[]>(["brg-f3", "fry-7", "ch-2", "rc-1", "cmb-5"]);
 
   const [selectedItemForModal, setSelectedItemForModal] = useState<MenuItem | null>(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchOfferItemIds = async () => {
+      try {
+        const res = await fetch(`/api/billboards?t=${Date.now()}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.billboards && data.billboards.length > 0) {
+            const ids: string[] = data.billboards.flatMap((b: any) => b.item_ids || []);
+            if (ids.length > 0) {
+              setOfferItemIds(Array.from(new Set(ids)));
+            }
+          }
+        }
+      } catch {
+        // Keep initial fallback
+      }
+    };
+    fetchOfferItemIds();
+  }, []);
 
   useEffect(() => {
     if (!targetDishId) return;
@@ -35,7 +56,9 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose, targetD
       setSpicyOnly(false);
       setGrilledOnly(false);
 
-      if (targetItem.category) {
+      if (offerItemIds.includes(targetDishId)) {
+        setActiveCategory("offers");
+      } else if (targetItem.category) {
         setActiveCategory(targetItem.category);
       } else {
         setActiveCategory("all");
@@ -59,11 +82,16 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose, targetD
         clearTimeout(clearHighlightTimer);
       };
     }
-  }, [targetDishId, MENU_ITEMS]);
+  }, [targetDishId, MENU_ITEMS, offerItemIds]);
 
   const filteredItems = useMemo(() => {
     return MENU_ITEMS.filter((item) => {
-      if (activeCategory !== "all" && item.category !== activeCategory) return false;
+      if (activeCategory === "offers") {
+        if (!offerItemIds.includes(item.id)) return false;
+      } else if (activeCategory !== "all" && item.category !== activeCategory) {
+        return false;
+      }
+
       if (vegOnly && !item.isVeg) return false;
       if (spicyOnly && !item.isSpicy) return false;
       if (grilledOnly && !item.isGrilled) return false;
@@ -77,7 +105,7 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose, targetD
       }
       return true;
     });
-  }, [activeCategory, searchQuery, vegOnly, spicyOnly, grilledOnly]);
+  }, [activeCategory, searchQuery, vegOnly, spicyOnly, grilledOnly, MENU_ITEMS, offerItemIds]);
 
   const handleCardClick = (item: MenuItem) => {
     if (item.prices && item.prices.length > 0) {
@@ -280,17 +308,28 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose, targetD
           <div className="flex items-center gap-6 overflow-x-auto no-scrollbar pt-2 pb-2">
             {MENU_CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat.id;
+              const isOffersCat = cat.id === "offers";
               return (
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`relative text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] whitespace-nowrap transition-all duration-300 ${
+                  className={`relative text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] whitespace-nowrap transition-all duration-300 flex items-center gap-1.5 ${
                     isActive
                       ? "text-[#fdb813] after:content-[''] after:absolute after:-bottom-3 after:left-0 after:w-full after:h-[2px] after:bg-[#fdb813]"
+                      : isOffersCat
+                      ? "text-[#fdb813]/90 hover:text-[#fdb813]"
                       : "text-gray-500 hover:text-[#fdb813]/70"
                   }`}
                 >
-                  {cat.name}
+                  {isOffersCat && <Sparkles className="w-3.5 h-3.5 fill-[#fdb813] text-[#fdb813]" />}
+                  <span>{cat.name}</span>
+                  {cat.badge && (
+                    <span className={`text-[8px] px-1.5 py-0.5 rounded-full font-black uppercase ${
+                      isOffersCat ? "bg-[#fdb813] text-black" : "bg-white/10 text-[#fdb813]"
+                    }`}>
+                      {cat.badge}
+                    </span>
+                  )}
                 </button>
               );
             })}

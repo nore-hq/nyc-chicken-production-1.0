@@ -58,6 +58,20 @@ export function MenuProvider({ children }: { children: ReactNode }) {
             icon: cat.icon,
             badge: cat.badge || undefined,
           }));
+          if (!mappedCategories.some((c) => c.id === "offers")) {
+            const allIdx = mappedCategories.findIndex((c) => c.id === "all");
+            const offersCat: MenuCategory = {
+              id: "offers",
+              name: "Today's Offers",
+              icon: "Sparkles",
+              badge: "Deals",
+            };
+            if (allIdx !== -1) {
+              mappedCategories.splice(allIdx + 1, 0, offersCat);
+            } else {
+              mappedCategories.unshift(offersCat);
+            }
+          }
           setCategories(mappedCategories);
         }
       }

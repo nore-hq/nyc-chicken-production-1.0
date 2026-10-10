@@ -38,6 +38,7 @@ export interface Billboard {
 
 export const MENU_CATEGORIES: MenuCategory[] = [
   { id: "all", name: "Full Menu", icon: "Utensils" },
+  { id: "offers", name: "Today's Offers", icon: "Sparkles", badge: "Deals" },
   { id: "starters", name: "Starters & Fries", icon: "Popcorn" },
   { id: "burgers", name: "Burgers", icon: "HamBurger", badge: "Popular" },
   { id: "wraps", name: "Wraps", icon: "Wrap" },

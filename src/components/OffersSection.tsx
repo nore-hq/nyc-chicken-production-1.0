@@ -156,6 +156,39 @@ function OfferCard({
   );
 }
 
+const DEFAULT_BILLBOARDS: Billboard[] = [
+  {
+    id: "offer_default_1",
+    title: "Brooklyn Double Burger Special",
+    subtitle: "Double portion of crispy chicken breast topped with fresh lettuce, tomato & NYC signature sauce",
+    image_url: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+    item_ids: ["brg-f3"],
+    cta_text: "View Offer Dish",
+    is_active: true,
+    display_order: 1,
+  },
+  {
+    id: "offer_default_2",
+    title: "Char Grilled Peri Peri Fries",
+    subtitle: "Peri Peri loaded fries topped generously with spicy char-grilled chicken pieces",
+    image_url: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
+    item_ids: ["fry-7"],
+    cta_text: "View Offer Dish",
+    is_active: true,
+    display_order: 2,
+  },
+  {
+    id: "offer_default_3",
+    title: "Manhattan Boneless Chicken Strips",
+    subtitle: "Manhattan style signature boneless crispy fried chicken strips, perfectly seasoned",
+    image_url: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=800&q=80",
+    item_ids: ["ch-2"],
+    cta_text: "View Offer Dish",
+    is_active: true,
+    display_order: 3,
+  },
+];
+
 export default function OffersSection({ onClaimOffer }: OffersSectionProps) {
   const [billboards, setBillboards] = useState<Billboard[]>([]);
   const [loading, setLoading] = useState(true);
@@ -166,14 +199,16 @@ export default function OffersSection({ onClaimOffer }: OffersSectionProps) {
         const res = await fetch(`/api/billboards?t=${Date.now()}`);
         if (res.ok) {
           const data = await res.json();
-          setBillboards(data.billboards || []);
+          if (data.billboards && data.billboards.length > 0) {
+            setBillboards(data.billboards);
+          } else {
+            setBillboards(DEFAULT_BILLBOARDS);
+          }
         } else {
-          // API not available (e.g. next dev without pages:dev) — show empty state
-          setBillboards([]);
+          setBillboards(DEFAULT_BILLBOARDS);
         }
       } catch {
-        // Network error or route doesn't exist in this mode
-        setBillboards([]);
+        setBillboards(DEFAULT_BILLBOARDS);
       } finally {
         setLoading(false);
       }

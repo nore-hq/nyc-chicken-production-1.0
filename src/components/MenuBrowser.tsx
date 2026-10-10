@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { MenuItem } from "../data/menuData";
 import { useMenuData } from "../context/MenuContext";
 import { Search, Flame, Leaf, Sparkles, Plus, Check, X, Info, Image as ImageIcon } from "lucide-react";
@@ -10,18 +10,56 @@ interface MenuBrowserProps {
   onAddToCart: (item: MenuItem, selectedSize?: { label: string; price: number }) => void;
   cartItemIds: string[];
   onClose?: () => void;
+  targetDishId?: string | null;
 }
 
-export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuBrowserProps) {
+export default function MenuBrowser({ onAddToCart, cartItemIds, onClose, targetDishId }: MenuBrowserProps) {
   const { items: MENU_ITEMS, categories: MENU_CATEGORIES } = useMenuData();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [vegOnly, setVegOnly] = useState<boolean>(false);
   const [spicyOnly, setSpicyOnly] = useState<boolean>(false);
   const [grilledOnly, setGrilledOnly] = useState<boolean>(false);
+  const [highlightedItemId, setHighlightedItemId] = useState<string | null>(null);
 
   const [selectedItemForModal, setSelectedItemForModal] = useState<MenuItem | null>(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState<number>(0);
+
+  useEffect(() => {
+    if (!targetDishId) return;
+
+    const targetItem = MENU_ITEMS.find((item) => item.id === targetDishId);
+    if (targetItem) {
+      setSearchQuery("");
+      setVegOnly(false);
+      setSpicyOnly(false);
+      setGrilledOnly(false);
+
+      if (targetItem.category) {
+        setActiveCategory(targetItem.category);
+      } else {
+        setActiveCategory("all");
+      }
+
+      setHighlightedItemId(targetDishId);
+
+      const scrollTimer = setTimeout(() => {
+        const el = document.getElementById(`menu-item-${targetDishId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 150);
+
+      const clearHighlightTimer = setTimeout(() => {
+        setHighlightedItemId(null);
+      }, 5000);
+
+      return () => {
+        clearTimeout(scrollTimer);
+        clearTimeout(clearHighlightTimer);
+      };
+    }
+  }, [targetDishId, MENU_ITEMS]);
 
   const filteredItems = useMemo(() => {
     return MENU_ITEMS.filter((item) => {
@@ -284,16 +322,28 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose }: MenuB
                 {filteredItems.map((item, idx) => {
                   const isInCart = cartItemIds.includes(item.id);
                   const hasMultiplePrices = item.prices && item.prices.length > 0;
+                  const isHighlighted = item.id === highlightedItemId;
 
                   return (
                     <motion.div 
                       layout
+                      id={`menu-item-${item.id}`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, delay: idx > 10 ? 0 : idx * 0.05 }}
                       key={item.id} 
-                      className="group relative flex flex-col justify-between bg-[#111111]/80 backdrop-blur-md p-6 sm:p-8 rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(253,184,19,0.1)] border border-gray-900 hover:border-[#fdb813]/40"
+                      className={`group relative flex flex-col justify-between bg-[#111111]/80 backdrop-blur-md p-6 sm:p-8 rounded-[2rem] transition-all duration-500 border ${
+                        isHighlighted
+                          ? "border-[#fdb813] ring-4 ring-[#fdb813]/40 shadow-[0_0_50px_rgba(253,184,19,0.5)] scale-[1.02]"
+                          : "border-gray-900 hover:border-[#fdb813]/40 shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(253,184,19,0.1)]"
+                      }`}
                     >
+                      {isHighlighted && (
+                        <div className="absolute -top-3.5 right-6 z-20 flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#fdb813] text-black font-black text-[10px] tracking-wider uppercase shadow-xl animate-bounce">
+                          <Sparkles className="w-3 h-3 fill-black" />
+                          <span>Featured Offer Dish</span>
+                        </div>
+                      )}
                       <div className="space-y-4">
                         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-black">
                           {item.image ? (

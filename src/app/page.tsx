@@ -24,6 +24,8 @@ export default function Home() {
   const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false);
   const [isFranchiseOpen, setIsFranchiseOpen] = useState<boolean>(false);
 
+  const [targetDishId, setTargetDishId] = useState<string | null>(null);
+
   const handleAddToCart = (
     item: MenuItem,
     selectedSize?: { label: string; price: number }
@@ -48,25 +50,30 @@ export default function Home() {
     setIsCartOpen(true);
   };
 
-  const handleOfferOrder = (offer: Billboard) => {
-    const offerItems = (offer.item_ids || [])
-      .map(itemId => menuItems.find(item => item.id === itemId))
-      .filter((item): item is MenuItem => !!item && item.isAvailable !== false);
+  const handleClaimOffer = (offer: Billboard) => {
+    let dishId: string | null = null;
 
-    if (offerItems.length === 0) {
-      setIsMenuExpanded(true);
-      setTimeout(() => {
-        document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
-      }, 150);
-      return;
+    if (offer.item_ids && offer.item_ids.length > 0) {
+      dishId = offer.item_ids[0];
+    } else if (offer.link_url && offer.link_url.startsWith("#")) {
+      const cleaned = offer.link_url.replace("#menu-item-", "").replace("#", "");
+      if (menuItems.some((i) => i.id === cleaned)) {
+        dishId = cleaned;
+      }
     }
 
-    setActiveOffer(offer);
-    setCartItems(prev => [
-      ...prev.filter(cartItem => !cartItem.offerId),
-      ...offerItems.map(item => ({ item, quantity: 1, offerId: offer.id })),
-    ]);
-    setIsCartOpen(true);
+    setIsMenuExpanded(true);
+
+    if (dishId) {
+      setTargetDishId(null);
+      setTimeout(() => {
+        setTargetDishId(dishId);
+      }, 50);
+    } else {
+      setTimeout(() => {
+        document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
   };
 
   const handleUpdateQuantity = (index: number, newQty: number) => {
@@ -124,11 +131,11 @@ export default function Home() {
         <main className="flex-grow">
           {/* Offers Bento Section */}
           <OffersSection
-            onClaimOffer={handleOfferOrder}
+            onClaimOffer={handleClaimOffer}
           />
 
           <Hero
-            onClaimOffer={handleOfferOrder}
+            onClaimOffer={handleClaimOffer}
           />
 
           {/* Menu Interaction Flow */}
@@ -141,6 +148,13 @@ export default function Home() {
                   document.getElementById('menu-full')?.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
               }}
+              onSelectDish={(dishId) => {
+                setIsMenuExpanded(true);
+                setTargetDishId(null);
+                setTimeout(() => {
+                  setTargetDishId(dishId);
+                }, 50);
+              }}
             />
             {/* Full Menu Expansion */}
             {isMenuExpanded && (
@@ -148,6 +162,7 @@ export default function Home() {
                 <MenuBrowser
                   onAddToCart={handleAddToCart}
                   cartItemIds={cartItemIds}
+                  targetDishId={targetDishId}
                   onClose={() => {
                     setIsMenuExpanded(false);
                     document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });

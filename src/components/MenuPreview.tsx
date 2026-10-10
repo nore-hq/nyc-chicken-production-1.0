@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 interface MenuPreviewProps {
   onExpand: () => void;
+  onSelectDish?: (dishId: string) => void;
   isExpanded: boolean;
 }
 
@@ -13,6 +14,7 @@ interface MenuPreviewProps {
 const SIGNATURE_DISHES = [
   {
     id: "sig-1",
+    itemId: "brg-f3",
     name: "Brooklyn Double Burger",
     description:
       "Double portion of crispy chicken breast topped with fresh lettuce, tomato, NYC signature sauce & cheese slice",
@@ -21,6 +23,7 @@ const SIGNATURE_DISHES = [
   },
   {
     id: "sig-2",
+    itemId: "fry-7",
     name: "Char Grilled Peri Peri Fries",
     description:
       "Peri Peri loaded fries topped generously with spicy char-grilled chicken pieces",
@@ -29,6 +32,7 @@ const SIGNATURE_DISHES = [
   },
   {
     id: "sig-3",
+    itemId: "ch-2",
     name: "Fried Chicken Boneless",
     description:
       "Manhattan style signature boneless crispy fried chicken strips, perfectly seasoned",
@@ -37,6 +41,7 @@ const SIGNATURE_DISHES = [
   },
   {
     id: "sig-4",
+    itemId: "rc-1",
     name: "Fried Chicken Rice Bowl",
     description:
       "Rice cooked with pure ghee, mixed fresh vegetables, NYC spice mix & topped with grilled chicken steak",
@@ -45,7 +50,7 @@ const SIGNATURE_DISHES = [
   },
 ];
 
-export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) {
+export default function MenuPreview({ onExpand, onSelectDish, isExpanded }: MenuPreviewProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -56,6 +61,14 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const handleDishClick = (itemId: string) => {
+    if (onSelectDish) {
+      onSelectDish(itemId);
+    } else {
+      onExpand();
+    }
+  };
 
   return (
     <section className="py-20 md:py-24 bg-transparent relative overflow-hidden">
@@ -93,6 +106,7 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: idx * 0.12 }}
                 whileHover={{ y: -10, scale: 1.02 }}
+                onClick={() => handleDishClick(dish.itemId)}
                 className="group relative bg-[#111111] rounded-3xl overflow-hidden border border-[#fdb813]/20 hover:border-[#fdb813] transition-all duration-500 shadow-[0_0_30px_rgba(253,184,19,0.1)] hover:shadow-[0_0_40px_rgba(253,184,19,0.3)] cursor-pointer"
               >
                 {/* Video background */}
@@ -131,6 +145,9 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                       <span className="text-[#fdb813] font-bold tracking-widest text-sm font-sans">
                         ₹{dish.price}
                       </span>
+                      <span className="text-[10px] text-[#fdb813] font-bold uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        View Item <ChevronRight className="w-3 h-3" />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -149,7 +166,8 @@ export default function MenuPreview({ onExpand, isExpanded }: MenuPreviewProps) 
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="flex items-center justify-between p-5 bg-black/40 backdrop-blur-sm rounded-2xl border border-[#fdb813]/20 hover:border-[#fdb813]/50 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(253,184,19,0.05)]"
+                onClick={() => handleDishClick(dish.itemId)}
+                className="flex items-center justify-between p-5 bg-black/40 backdrop-blur-sm rounded-2xl border border-[#fdb813]/20 hover:border-[#fdb813]/50 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(253,184,19,0.05)] cursor-pointer"
               >
                 <div className="flex-1 min-w-0 pr-4">
                   <h3

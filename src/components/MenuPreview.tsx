@@ -51,15 +51,10 @@ const SIGNATURE_DISHES = [
 ];
 
 export default function MenuPreview({ onExpand, onSelectDish, isExpanded }: MenuPreviewProps) {
-  const [isMobile, setIsMobile] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleDishClick = (itemId: string) => {
@@ -71,7 +66,7 @@ export default function MenuPreview({ onExpand, onSelectDish, isExpanded }: Menu
   };
 
   return (
-    <section className="py-20 md:py-24 bg-transparent relative overflow-hidden">
+    <section className="py-14 sm:py-20 md:py-24 bg-transparent relative overflow-hidden">
       {/* Ambient Yellow Glows */}
       <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-[#fdb813]/10 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-[#fdb813]/5 rounded-full blur-[150px] pointer-events-none -z-10" />
@@ -82,22 +77,25 @@ export default function MenuPreview({ onExpand, onSelectDish, isExpanded }: Menu
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-8 md:mb-16"
         >
-          <p className="text-[#fdb813] text-xs font-bold tracking-[0.3em] uppercase mb-4 font-sans">
+          <p className="text-[#fdb813] text-xs font-bold tracking-[0.3em] uppercase mb-3 md:mb-4 font-sans">
             Signature Selection
           </p>
           <h2
-            className="text-3xl sm:text-5xl md:text-6xl text-white capitalize tracking-tight"
+            className="text-3xl sm:text-5xl md:text-6xl text-white capitalize tracking-tight mb-3 md:mb-0"
             style={{ fontFamily: "var(--font-playfair), serif" }}
           >
             Taste The Menu
           </h2>
+          <p className="md:hidden text-gray-400 text-xs sm:text-sm max-w-sm mx-auto font-sans leading-relaxed">
+            Discover our authentic NYC flavors, crispy chicken specialties, loaded fries, and chef specials.
+          </p>
         </motion.div>
 
-        {/* Video Cards — Desktop (2-col on md, 4-col on xl) */}
-        {hasMounted && !isMobile && (
-          <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
+        {/* Video Cards — Desktop only (2-col on md, 4-col on xl; hidden on mobile) */}
+        {hasMounted && (
+          <div className="hidden md:grid grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
             {SIGNATURE_DISHES.map((dish, idx) => (
               <motion.div
                 key={dish.id}
@@ -151,38 +149,6 @@ export default function MenuPreview({ onExpand, onSelectDish, isExpanded }: Menu
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {/* Mobile — Simple text list */}
-        {hasMounted && isMobile && (
-          <div className="space-y-6 mb-12">
-            {SIGNATURE_DISHES.map((dish, idx) => (
-              <motion.div
-                key={dish.id}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                onClick={() => handleDishClick(dish.itemId)}
-                className="flex items-center justify-between p-5 bg-black/40 backdrop-blur-sm rounded-2xl border border-[#fdb813]/20 hover:border-[#fdb813]/50 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(253,184,19,0.05)] cursor-pointer"
-              >
-                <div className="flex-1 min-w-0 pr-4">
-                  <h3
-                    className="text-base text-white mb-1 truncate"
-                    style={{ fontFamily: "var(--font-playfair), serif" }}
-                  >
-                    {dish.name}
-                  </h3>
-                  <p className="text-gray-500 text-xs font-light line-clamp-1 font-sans">
-                    {dish.description}
-                  </p>
-                </div>
-                <span className="text-[#fdb813] font-bold tracking-wide text-sm font-sans whitespace-nowrap">
-                  ₹{dish.price}
-                </span>
               </motion.div>
             ))}
           </div>

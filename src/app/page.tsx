@@ -156,7 +156,7 @@ export default function Home() {
                 }, 50);
               }}
             />
-            {/* Full Menu Expansion */}
+            {/* Full Menu Expansion (Only shown when user clicks Explore Menu) */}
             {isMenuExpanded && (
               <div className="relative">
                 <MenuBrowser
@@ -170,10 +170,14 @@ export default function Home() {
                 />
                 <div className="flex justify-center pb-24 -mt-12 relative z-20">
                   <button
-                    onClick={() => setIsMenuExpanded(false)}
-                    className="px-8 py-3 bg-[#111111] border border-gray-800 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:border-[#fdb813] hover:text-[#fdb813] transition-colors shadow-lg"
+                    onClick={() => {
+                      setIsMenuExpanded(false);
+                      document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="px-8 py-3 bg-[#111111] border border-gray-800 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:border-[#fdb813] hover:text-[#fdb813] active:scale-95 transition-all shadow-lg flex items-center gap-2 cursor-pointer"
                   >
-                    Collapse Menu ↑
+                    <span>Collapse Menu</span>
+                    <span>↑</span>
                   </button>
                 </div>
               </div>

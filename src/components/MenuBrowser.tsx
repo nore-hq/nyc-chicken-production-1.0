@@ -134,10 +134,10 @@ export default function MenuBrowser({ onAddToCart, cartItemIds, onClose, targetD
         
         {/* Sticky Close Button */}
         {onClose && (
-          <div className="sticky top-[max(6rem,env(safe-area-inset-top))] z-40 flex justify-end mb-4 -mt-16">
+          <div className="sticky top-[max(5rem,env(safe-area-inset-top))] z-40 flex justify-end mb-4 -mt-14 sm:-mt-16 pr-2 sm:pr-0">
             <button
               onClick={onClose}
-              className="flex items-center gap-2 px-5 py-2.5 bg-black/90 border border-gray-800 text-white rounded-full font-bold text-xs uppercase tracking-widest hover:border-[#fdb813] hover:text-[#fdb813] transition-colors shadow-2xl backdrop-blur-md"
+              className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-black/90 border border-gray-800 text-white rounded-full font-bold text-xs uppercase tracking-widest hover:border-[#fdb813] hover:text-[#fdb813] active:scale-95 transition-all shadow-2xl backdrop-blur-md cursor-pointer"
             >
               <span>Close Menu</span>
               <X className="w-4 h-4" />

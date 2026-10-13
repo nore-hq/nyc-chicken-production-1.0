@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
 import FranchisePage from "@/components/FranchisePage";
 import OffersSection from "@/components/OffersSection";
+import QuickTrayNotification, { QuickTrayItem } from "@/components/QuickTrayNotification";
 import { Billboard, MenuItem } from "@/data/menuData";
 import { useMenuData } from "@/context/MenuContext";
 
@@ -25,11 +26,15 @@ export default function Home() {
   const [isFranchiseOpen, setIsFranchiseOpen] = useState<boolean>(false);
 
   const [targetDishId, setTargetDishId] = useState<string | null>(null);
+  const [quickTrayItem, setQuickTrayItem] = useState<QuickTrayItem | null>(null);
+  const [isQuickTrayOpen, setIsQuickTrayOpen] = useState<boolean>(false);
 
   const handleAddToCart = (
     item: MenuItem,
     selectedSize?: { label: string; price: number }
   ) => {
+    const itemPrice = selectedSize ? selectedSize.price : item.price;
+
     setCartItems((prev) => {
       const existingIdx = prev.findIndex(
         (ci) =>
@@ -47,7 +52,13 @@ export default function Home() {
       }
     });
 
-    setIsCartOpen(true);
+    setQuickTrayItem({
+      item,
+      selectedSize,
+      price: itemPrice,
+      timestamp: Date.now(),
+    });
+    setIsQuickTrayOpen(true);
   };
 
   const handleClaimOffer = (offer: Billboard) => {
@@ -95,6 +106,10 @@ export default function Home() {
 
   const cartCount = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
   const cartItemIds = cartItems.map((ci) => ci.item.id);
+  const cartTotal = cartItems.reduce((acc, curr) => {
+    const itemPrice = curr.selectedSize ? curr.selectedSize.price : curr.item.price;
+    return acc + itemPrice * curr.quantity;
+  }, 0);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col selection:bg-[#fdb813] selection:text-black relative">
@@ -204,6 +219,19 @@ export default function Home() {
           onUpdateQuantity={handleUpdateQuantity}
           onClearCart={handleClearCart}
           offer={activeOffer}
+        />
+
+        {/* Quick Tray Added Notification */}
+        <QuickTrayNotification
+          isOpen={isQuickTrayOpen}
+          onClose={() => setIsQuickTrayOpen(false)}
+          onCompleteOrder={() => {
+            setIsQuickTrayOpen(false);
+            setIsCartOpen(true);
+          }}
+          addedItem={quickTrayItem}
+          cartCount={cartCount}
+          cartTotal={cartTotal}
         />
 
         {/* Franchise Page Overlay */}

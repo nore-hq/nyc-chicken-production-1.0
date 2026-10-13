@@ -58,6 +58,14 @@ export function MenuProvider({ children }: { children: ReactNode }) {
             icon: cat.icon,
             badge: cat.badge || undefined,
           }));
+          if (!mappedCategories.some((c) => c.id === "signature")) {
+            mappedCategories.unshift({
+              id: "signature",
+              name: "Signature Dishes",
+              icon: "Star",
+              badge: "Must Try",
+            });
+          }
           if (!mappedCategories.some((c) => c.id === "offers")) {
             const allIdx = mappedCategories.findIndex((c) => c.id === "all");
             const offersCat: MenuCategory = {

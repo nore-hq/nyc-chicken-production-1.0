@@ -2,7 +2,7 @@
 
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { X, Phone, Mail, Globe, ChevronRight } from "lucide-react";
+import { X, Phone, Mail, Globe, ChevronRight, Download, FileText } from "lucide-react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 
 interface FranchisePageProps {
@@ -71,12 +71,24 @@ export default function FranchisePage({ isOpen, onClose }: FranchisePageProps) {
                 >
                   {/* Header row */}
                   <div className="mb-3 flex shrink-0 items-center justify-between px-1">
-                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
-                      Franchise Opportunity
-                    </span>
-                    <span className="text-xs font-medium text-gray-400">
-                      New York Chicken
-                    </span>
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
+                        Franchise Opportunity
+                      </span>
+                      <span className="hidden sm:inline-block text-xs font-medium text-gray-500">
+                        • New York Chicken
+                      </span>
+                    </div>
+                    <a
+                      href="/NYC%20Kerala%20Franchise%20Flyers.pdf"
+                      download="NYC Kerala Franchise Flyers.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[#fdb813]/60 bg-[#fdb813]/15 px-3 py-1 text-[11px] font-bold text-[#fdb813] shadow-[0_0_15px_rgba(253,184,19,0.15)] transition-all hover:bg-[#fdb813] hover:text-black hover:border-[#fdb813] active:scale-95"
+                    >
+                      <Download className="h-3 w-3 stroke-[2.5]" />
+                      <span>Download Flyer</span>
+                    </a>
                   </div>
 
                   {/* Scrollable content container */}
@@ -102,13 +114,47 @@ export default function FranchisePage({ isOpen, onClose }: FranchisePageProps) {
                     {/* ── Main Content ── */}
                     <div className="px-5 pb-10 pt-2 sm:px-10">
 
+                      {/* Featured Flyer Download Card */}
+                      <motion.div
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        custom={0}
+                        className="my-6 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-[#fdb813]/30 bg-gradient-to-r from-[#14161c] via-[#1c1810] to-[#14161c] p-4 sm:p-5 shadow-xl"
+                      >
+                        <div className="flex items-center gap-3.5 text-center sm:text-left w-full sm:w-auto">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#fdb813]/15 border border-[#fdb813]/35 text-[#fdb813]">
+                            <FileText className="h-6 w-6" />
+                          </div>
+                          <div>
+                            <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                              NYC Kerala Franchise Flyers
+                            </h3>
+                            <p className="text-xs text-gray-400 mt-0.5">
+                              Store formats, brand overview, investment details & franchise model
+                            </p>
+                          </div>
+                        </div>
+                        <a
+                          href="/NYC%20Kerala%20Franchise%20Flyers.pdf"
+                          download="NYC Kerala Franchise Flyers.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex w-full sm:w-auto shrink-0 items-center justify-center gap-2 rounded-xl bg-[#fdb813] px-5 py-3 text-xs font-black uppercase tracking-wider text-black shadow-[0_0_20px_rgba(253,184,19,0.25)] transition-all hover:bg-[#ffc334] hover:shadow-[0_0_30px_rgba(253,184,19,0.45)] active:scale-95 cursor-pointer"
+                        >
+                          <Download className="h-4 w-4 stroke-[2.5]" />
+                          <span>Download Flyer (PDF)</span>
+                        </a>
+                      </motion.div>
+
                       {/* International Expansion */}
                       <motion.section
                         variants={fadeUp}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        custom={0}
+                        custom={1}
                         className="mb-10 mt-4"
                       >
                         <p className="text-sm leading-7 text-gray-300 sm:text-base">
@@ -261,9 +307,19 @@ export default function FranchisePage({ isOpen, onClose }: FranchisePageProps) {
                         <h2 className="mb-2 text-xl font-extrabold tracking-tight text-black sm:text-2xl">
                           Build the Next Chapter of New York Chicken in Kerala
                         </h2>
-                        <p className="text-sm font-medium text-black/70">
+                        <p className="text-sm font-medium text-black/80 mb-5">
                           Join New York Chicken as a franchise partner and be part of the brand&apos;s growing Kerala network.
                         </p>
+                        <a
+                          href="/NYC%20Kerala%20Franchise%20Flyers.pdf"
+                          download="NYC Kerala Franchise Flyers.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded-xl bg-black px-6 py-3.5 text-xs font-black uppercase tracking-wider text-[#fdb813] shadow-xl transition-all hover:bg-neutral-950 hover:text-white active:scale-95"
+                        >
+                          <Download className="h-4 w-4 stroke-[2.5]" />
+                          <span>Download Franchise Flyer</span>
+                        </a>
                       </motion.section>
 
                       {/* Contact */}
@@ -278,6 +334,16 @@ export default function FranchisePage({ isOpen, onClose }: FranchisePageProps) {
                           Franchise Enquiries
                         </h3>
                         <div className="flex flex-col gap-3">
+                          <a
+                            href="/NYC%20Kerala%20Franchise%20Flyers.pdf"
+                            download="NYC Kerala Franchise Flyers.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 rounded-xl border border-[#fdb813]/40 bg-[#fdb813]/10 px-4 py-3 text-sm font-semibold text-[#fdb813] transition-colors hover:border-[#fdb813] hover:bg-[#fdb813]/20"
+                          >
+                            <Download className="h-4 w-4 shrink-0 text-[#fdb813]" />
+                            Download Franchise Flyer (PDF)
+                          </a>
                           <a
                             href="tel:+919645739207"
                             className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-200 transition-colors hover:border-[#fdb813]/40 hover:text-[#fdb813]"

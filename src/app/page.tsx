@@ -7,7 +7,7 @@ import MenuPreview from "@/components/MenuPreview";
 import MenuBrowser from "@/components/MenuBrowser";
 import InstagramReelsWidget from "@/components/InstagramReelsWidget";
 import BrochureViewer from "@/components/BrochureViewer";
-import OrderDrawer, { CartItem } from "@/components/OrderDrawer";
+import OrderDrawer, { CartItem, FREE_SAUCE_ADDONS } from "@/components/OrderDrawer";
 import StoreShowcase from "@/components/StoreShowcase";
 import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
@@ -97,6 +97,17 @@ export default function Home() {
         return updated;
       });
     }
+  };
+
+  const handleUpdateFreeSauce = (
+    index: number,
+    sauce?: (typeof FREE_SAUCE_ADDONS)[number]
+  ) => {
+    setCartItems((prev) =>
+      prev.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, freeSauce: sauce } : item
+      )
+    );
   };
 
   const handleClearCart = () => {
@@ -209,7 +220,7 @@ export default function Home() {
         </main>
 
         {/* Footer */}
-        <Footer />
+        <Footer onOpenFranchise={() => setIsFranchiseOpen(true)} />
 
         {/* Floating Cart / WhatsApp Order Drawer */}
         <OrderDrawer
@@ -217,6 +228,7 @@ export default function Home() {
           onClose={() => setIsCartOpen(false)}
           cartItems={cartItems}
           onUpdateQuantity={handleUpdateQuantity}
+          onUpdateFreeSauce={handleUpdateFreeSauce}
           onClearCart={handleClearCart}
           offer={activeOffer}
         />

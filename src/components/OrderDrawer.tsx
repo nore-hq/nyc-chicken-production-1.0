@@ -4,11 +4,22 @@ import { useState } from "react";
 import { Billboard, MenuItem } from "../data/menuData";
 import { X, Trash2, Plus, Minus, Send, Phone, ShoppingBag, Info } from "lucide-react";
 
+export const FREE_SAUCE_ADDONS = [
+  "Peri peri",
+  "BBQ",
+  "Chipotle",
+  "Schezwan",
+  "Sweet chilli",
+] as const;
+
+type FreeSauceAddon = (typeof FREE_SAUCE_ADDONS)[number];
+
 export interface CartItem {
   item: MenuItem;
   selectedSize?: { label: string; price: number };
   quantity: number;
   offerId?: string;
+  freeSauce?: FreeSauceAddon;
 }
 
 interface OrderDrawerProps {
@@ -16,6 +27,7 @@ interface OrderDrawerProps {
   onClose: () => void;
   cartItems: CartItem[];
   onUpdateQuantity: (index: number, newQty: number) => void;
+  onUpdateFreeSauce: (index: number, sauce?: FreeSauceAddon) => void;
   onClearCart: () => void;
   offer?: Billboard | null;
 }
@@ -25,6 +37,7 @@ export default function OrderDrawer({
   onClose,
   cartItems,
   onUpdateQuantity,
+  onUpdateFreeSauce,
   onClearCart,
   offer,
 }: OrderDrawerProps) {
@@ -58,7 +71,8 @@ export default function OrderDrawer({
     cartItems.forEach((ci, idx) => {
       const sizeLabel = ci.selectedSize ? ` (${ci.selectedSize.label})` : "";
       const price = ci.selectedSize ? ci.selectedSize.price : ci.item.price;
-      message += `${idx + 1}. *${ci.item.name}*${sizeLabel} x${ci.quantity} - ₹${price * ci.quantity}\n`;
+      const freeSauce = ci.freeSauce ? ` — Free sauce: ${ci.freeSauce}` : "";
+      message += `${idx + 1}. *${ci.item.name}*${sizeLabel} x${ci.quantity}${freeSauce} - ₹${price * ci.quantity}\n`;
     });
 
     message += `-----------------------------------\n`;
@@ -148,6 +162,9 @@ export default function OrderDrawer({
 
                   {cartItems.map((ci, index) => {
                     const price = ci.selectedSize ? ci.selectedSize.price : ci.item.price;
+                    const hasFreeSauceAddon =
+                      ci.item.category === "rice_bowls" ||
+                      ci.item.name.toLowerCase().includes("china town");
                     return (
                       <div
                         key={`${ci.item.id}-${ci.selectedSize?.label || "default"}-${ci.offerId || "regular"}-${index}`}
@@ -159,6 +176,32 @@ export default function OrderDrawer({
                             <span className="text-[10px] text-[#fdb813] font-bold uppercase tracking-widest block">
                               {ci.selectedSize.label}
                             </span>
+                          )}
+                          {hasFreeSauceAddon && (
+                            <label className="block pt-2">
+                              <span className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                                Free side sauce (optional)
+                              </span>
+                              <select
+                                value={ci.freeSauce ?? ""}
+                                onChange={(event) =>
+                                  onUpdateFreeSauce(
+                                    index,
+                                    FREE_SAUCE_ADDONS.find(
+                                      (sauce) => sauce === event.currentTarget.value
+                                    )
+                                  )
+                                }
+                                className="w-full rounded-lg border border-gray-800 bg-black px-3 py-2 text-xs text-white focus:border-[#fdb813] focus:outline-none"
+                              >
+                                <option value="">No sauce</option>
+                                {FREE_SAUCE_ADDONS.map((sauce) => (
+                                  <option key={sauce} value={sauce}>
+                                    {sauce}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
                           )}
                           <p className="text-sm text-gray-400 font-bold pt-1">₹{price * ci.quantity}</p>
                         </div>

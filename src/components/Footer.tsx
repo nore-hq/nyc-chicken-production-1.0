@@ -5,7 +5,11 @@ import Link from "next/link";
 import { Phone, MapPin, Download } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function Footer() {
+interface FooterProps {
+  onOpenFranchise?: () => void;
+}
+
+export default function Footer({ onOpenFranchise }: FooterProps) {
   return (
     <footer className="bg-[#0b0c0e]/95 backdrop-blur-md text-white pt-16 sm:pt-20 pb-[max(2.5rem,env(safe-area-inset-bottom))] border-t border-[#fdb813]/20 relative z-10 overflow-hidden">
       {/* Ambient Glow */}
@@ -88,6 +92,23 @@ export default function Footer() {
                   Landline: 0471-2419991
                 </a>
               </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-[#fdb813] flex-shrink-0" />
+                <div className="flex flex-col gap-0.5">
+                  <button
+                    onClick={onOpenFranchise}
+                    className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest hover:text-[#fdb813] transition-colors text-left"
+                  >
+                    Franchise Enquiries ↗
+                  </button>
+                  <a
+                    href="tel:9645739207"
+                    className="hover:text-[#fdb813] font-bold transition-colors"
+                  >
+                    +91 96457 39207
+                  </a>
+                </div>
+              </li>
             </ul>
           </motion.div>
 
@@ -110,6 +131,14 @@ export default function Footer() {
                 <Link href="#menu" className="hover:text-[#fdb813] font-bold transition-colors inline-block hover:translate-x-1 transform duration-200">
                   Menu
                 </Link>
+              </li>
+              <li>
+                <button
+                  onClick={onOpenFranchise}
+                  className="hover:text-[#fdb813] font-bold transition-colors inline-block hover:translate-x-1 transform duration-200 text-left"
+                >
+                  Franchise
+                </button>
               </li>
               <li>
                 <Link href="#ambiance" className="hover:text-[#fdb813] font-bold transition-colors inline-block hover:translate-x-1 transform duration-200">

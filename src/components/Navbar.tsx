@@ -118,7 +118,7 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu, onOpenFranch
 
             {/* Reserve Button */}
             <motion.a
-              href="tel:8111809991"
+              href="tel:8111843109"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -230,10 +230,10 @@ export default function Navbar({ cartCount, onOpenCart, onOpenMenu, onOpenFranch
                   Order Full Menu
                 </button>
                 <a
-                  href="tel:8111809991"
+                  href="tel:8111843109"
                   className="block w-full text-center py-3 px-6 rounded-full border border-[#fdb813] text-[#fdb813] font-bold text-sm uppercase tracking-[0.2em] active:scale-95 transition-transform"
                 >
-                  Call Now: 8111809991
+                  Call Now: 8111843109
                 </a>
               </motion.div>
             </div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Billboard, MenuItem } from "../data/menuData";
-import { X, Trash2, Plus, Minus, Send, Phone, ShoppingBag, Info } from "lucide-react";
+import { X, Trash2, Plus, Minus, Send, Phone, ShoppingBag, Info, AlertCircle } from "lucide-react";
 
 export const FREE_SAUCE_ADDONS = [
   "Peri peri",
@@ -46,6 +46,11 @@ export default function OrderDrawer({
   const [customerPhone, setCustomerPhone] = useState("");
   const [addressOrTable, setAddressOrTable] = useState("");
   const [orderNotes, setOrderNotes] = useState("");
+  const [errors, setErrors] = useState<{
+    name?: string;
+    phone?: string;
+    address?: string;
+  }>({});
 
   const subtotal = cartItems.reduce((acc, curr) => {
     const itemPrice = curr.selectedSize ? curr.selectedSize.price : curr.item.price;
@@ -64,6 +69,31 @@ export default function OrderDrawer({
 
   const handleSendWhatsApp = () => {
     if (cartItems.length === 0) return;
+
+    const newErrors: { name?: string; phone?: string; address?: string } = {};
+
+    if (!customerName.trim()) {
+      newErrors.name = "Name is compulsory";
+    }
+
+    const trimmedPhone = customerPhone.trim();
+    if (!trimmedPhone) {
+      newErrors.phone = "Phone number is compulsory";
+    } else if (trimmedPhone.replace(/\D/g, "").length < 10) {
+      newErrors.phone = "Please enter a valid phone number (min 10 digits)";
+    }
+
+    if (!addressOrTable.trim()) {
+      newErrors.address =
+        orderType === "Dine-In"
+          ? "Table number is compulsory"
+          : "Address is compulsory";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     let message = `*NEW YORK CHICKEN - PREMIUM ORDER*\n`;
     message += `-----------------------------------\n`;
@@ -86,15 +116,15 @@ export default function OrderDrawer({
     }
     message += `*Total Amount:* ₹${totalAfterDiscount} (+ GST as applicable)\n`;
     message += `*Order Type:* ${orderType}\n`;
-    if (customerName) message += `*Name:* ${customerName}\n`;
-    if (customerPhone) message += `*Phone:* ${customerPhone}\n`;
-    if (addressOrTable) message += `*${orderType === "Dine-In" ? "Table No" : "Address"}:* ${addressOrTable}\n`;
-    if (orderNotes) message += `*Notes:* ${orderNotes}\n`;
+    message += `*Name:* ${customerName.trim()}\n`;
+    message += `*Phone:* ${customerPhone.trim()}\n`;
+    message += `*${orderType === "Dine-In" ? "Table No" : "Address"}:* ${addressOrTable.trim()}\n`;
+    if (orderNotes.trim()) message += `*Notes:* ${orderNotes.trim()}\n`;
     message += `-----------------------------------\n`;
     message += `Thank you! Sent from nychicken.in`;
 
     const encoded = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/918111809991?text=${encoded}`;
+    const whatsappUrl = `https://wa.me/918111843109?text=${encoded}`;
     window.open(whatsappUrl, "_blank");
   };
 
@@ -231,14 +261,24 @@ export default function OrderDrawer({
 
                 {/* Delivery / Order Details Form */}
                 <div className="space-y-6">
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#fdb813] border-b border-gray-800 pb-2">Details</h3>
+                  <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#fdb813]">Details</h3>
+                    <span className="text-[10px] text-gray-500 font-medium tracking-wider uppercase">
+                      * Marked fields are compulsory
+                    </span>
+                  </div>
 
                   {/* Order Type Tabs */}
                   <div className="grid grid-cols-3 gap-0 border border-gray-800 rounded-lg overflow-hidden">
                     {(["Delivery", "Takeaway", "Dine-In"] as const).map((t) => (
                       <button
                         key={t}
-                        onClick={() => setOrderType(t)}
+                        onClick={() => {
+                          setOrderType(t);
+                          if (errors.address) {
+                            setErrors((prev) => ({ ...prev, address: undefined }));
+                          }
+                        }}
                         className={`py-3 text-[10px] font-bold uppercase tracking-widest transition-colors ${
                           orderType === t
                             ? "bg-[#fdb813] text-black"
@@ -252,37 +292,113 @@ export default function OrderDrawer({
 
                   {/* Form Fields */}
                   <div className="space-y-4">
-                    <input
-                      type="text"
-                      placeholder="Your Name"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full px-4 py-3.5 bg-black border border-gray-800 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#fdb813] transition-colors"
-                    />
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-300 mb-1.5">
+                        Your Name <span className="text-red-400 font-black">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter your name (compulsory)"
+                        value={customerName}
+                        onChange={(e) => {
+                          setCustomerName(e.target.value);
+                          if (errors.name) {
+                            setErrors((prev) => ({ ...prev, name: undefined }));
+                          }
+                        }}
+                        className={`w-full px-4 py-3.5 bg-black border ${
+                          errors.name
+                            ? "border-red-500 focus:border-red-500 bg-red-950/10"
+                            : "border-gray-800 focus:border-[#fdb813]"
+                        } rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none transition-colors`}
+                      />
+                      {errors.name && (
+                        <p className="mt-1 text-[11px] font-semibold text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 inline shrink-0" />
+                          <span>{errors.name}</span>
+                        </p>
+                      )}
+                    </div>
 
-                    <input
-                      type="tel"
-                      placeholder="Phone Number"
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      className="w-full px-4 py-3.5 bg-black border border-gray-800 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#fdb813] transition-colors"
-                    />
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-300 mb-1.5">
+                        Phone Number <span className="text-red-400 font-black">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="Enter 10-digit phone number (compulsory)"
+                        value={customerPhone}
+                        onChange={(e) => {
+                          setCustomerPhone(e.target.value);
+                          if (errors.phone) {
+                            setErrors((prev) => ({ ...prev, phone: undefined }));
+                          }
+                        }}
+                        className={`w-full px-4 py-3.5 bg-black border ${
+                          errors.phone
+                            ? "border-red-500 focus:border-red-500 bg-red-950/10"
+                            : "border-gray-800 focus:border-[#fdb813]"
+                        } rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none transition-colors`}
+                      />
+                      {errors.phone && (
+                        <p className="mt-1 text-[11px] font-semibold text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 inline shrink-0" />
+                          <span>{errors.phone}</span>
+                        </p>
+                      )}
+                    </div>
 
-                    <input
-                      type="text"
-                      placeholder={orderType === "Dine-In" ? "Table Number" : "Delivery Address / Landmark"}
-                      value={addressOrTable}
-                      onChange={(e) => setAddressOrTable(e.target.value)}
-                      className="w-full px-4 py-3.5 bg-black border border-gray-800 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#fdb813] transition-colors"
-                    />
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-300 mb-1.5">
+                        {orderType === "Dine-In"
+                          ? "Table Number"
+                          : orderType === "Takeaway"
+                          ? "Address / Landmark"
+                          : "Delivery Address / Landmark"}{" "}
+                        <span className="text-red-400 font-black">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={
+                          orderType === "Dine-In"
+                            ? "Table number (compulsory)"
+                            : orderType === "Takeaway"
+                            ? "Your address / landmark (compulsory)"
+                            : "House / Flat No, Street, Landmark (compulsory)"
+                        }
+                        value={addressOrTable}
+                        onChange={(e) => {
+                          setAddressOrTable(e.target.value);
+                          if (errors.address) {
+                            setErrors((prev) => ({ ...prev, address: undefined }));
+                          }
+                        }}
+                        className={`w-full px-4 py-3.5 bg-black border ${
+                          errors.address
+                            ? "border-red-500 focus:border-red-500 bg-red-950/10"
+                            : "border-gray-800 focus:border-[#fdb813]"
+                        } rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none transition-colors`}
+                      />
+                      {errors.address && (
+                        <p className="mt-1 text-[11px] font-semibold text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 inline shrink-0" />
+                          <span>{errors.address}</span>
+                        </p>
+                      )}
+                    </div>
 
-                    <textarea
-                      placeholder="Special instructions"
-                      rows={2}
-                      value={orderNotes}
-                      onChange={(e) => setOrderNotes(e.target.value)}
-                      className="w-full px-4 py-3.5 bg-black border border-gray-800 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#fdb813] transition-colors resize-none"
-                    />
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">
+                        Special instructions <span className="text-[10px] text-gray-600 lowercase font-normal">(optional)</span>
+                      </label>
+                      <textarea
+                        placeholder="Add cooking requests or instructions..."
+                        rows={2}
+                        value={orderNotes}
+                        onChange={(e) => setOrderNotes(e.target.value)}
+                        className="w-full px-4 py-3.5 bg-black border border-gray-800 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#fdb813] transition-colors resize-none"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex items-start gap-2 text-[10px] font-bold text-gray-500 bg-black p-4 rounded-lg border border-gray-900">
@@ -321,6 +437,13 @@ export default function OrderDrawer({
                 </div>
               </div>
 
+              {Object.keys(errors).length > 0 && (
+                <div className="rounded-lg border border-red-500/40 bg-red-950/30 px-3.5 py-2.5 text-center text-xs font-semibold text-red-400 flex items-center justify-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                  <span>Please fill in all compulsory fields (* Name, Phone, Address)</span>
+                </div>
+              )}
+
               <button
                 onClick={handleSendWhatsApp}
                 className="w-full py-4 bg-[#fdb813] text-black text-sm uppercase tracking-[0.2em] font-black hover:bg-yellow-400 transition-colors flex items-center justify-center gap-3 rounded-full shadow-[0_0_20px_rgba(253,184,19,0.2)]"
@@ -331,11 +454,11 @@ export default function OrderDrawer({
 
               <div className="text-center pt-2">
                 <a
-                  href="tel:8111809991"
+                  href="tel:8111843109"
                   className="inline-flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5" />
-                  <span>Call 8111809991</span>
+                  <span>Call 8111843109</span>
                 </a>
               </div>
             </div>

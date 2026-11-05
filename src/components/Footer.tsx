@@ -69,10 +69,10 @@ export default function Footer({ onOpenFranchise }: FooterProps) {
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-[#fdb813] flex-shrink-0" />
                 <div className="flex items-center gap-2 flex-wrap">
                   <a
-                    href="tel:8111809991"
+                    href="tel:8111843109"
                     className="hover:text-[#fdb813] font-bold transition-colors"
                   >
-                    +91 8111809991
+                    +91 8111843109
                   </a>
                   <span className="text-gray-600">|</span>
                   <Link
